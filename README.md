@@ -1,12 +1,6 @@
 # Mixed Reality Design Labs
 This repo is where Microsoft's Windows Mixed Reality Design team publishes examples and explorations. The goal is to inspire creators and help them to build Mixed Reality experiences. We share sample app projects here that demonstrate how to use various types of common controls and patterns in Mixed Reality. Find out details about common controls and sample apps on https://developer.microsoft.com/en-us/windows/mixed-reality/design
 
-# Sample app - Periodic Table of the Elements
-https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable
-
-# Common controls and examples
-https://github.com/Microsoft/MRDesignLabs_Unity
-
 <img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Hero.jpg" alt="Periodic Table of the Elements">
 
 Periodic Table of the Elements is a open-source sample app from Microsoft's Mixed Reality Design Lab. With this project, you can learn how to layout an array of objects in 3D space with various surface types using Object collection. Also learn how to create interactable objects that respond to standard inputs from HoloLens. You can use this project's components to create your own mixed reality app experiences. 
@@ -27,11 +21,15 @@ Box elements use the **AcrylicReflective** and **AcrylicReflectiveTransparent sh
  
 The **ObjectCollectionMode** script inherits from one of HUX's most powerful tools, the **InteractionReceiver** class. With it you can rapidly set up an object to listen for input from HUX buttons. Just use the inspector to drag HUX buttons to the Interactables array, override a base function like OnTapped, and you're ready to go.
 
-<img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Technical3.jpg" alt="Periodic Table of the Elements">
+<img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Technical3.jpg" alt="Periodic Table of the Elements" width="450px">
 
 If you're rapidly prototyping, using the button's name to differentiate input is a quick way to get things done. You could also create a custom component that information relevant to a button's function. This only scratches the surface of the **InteractionReceiver class** - we’ll be exploring it in full elsewhere.
 
+# Sample app - Periodic Table of the Elements
+https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable
 
+# Common controls and examples
+https://github.com/Microsoft/MRDesignLabs_Unity
 
 
 
