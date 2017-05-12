@@ -324,7 +324,6 @@ GameObject:
   - component: {fileID: 4412270474760314}
   - component: {fileID: 23325109192437634}
   - component: {fileID: 102263452914372246}
-  - component: {fileID: 114009888369327148}
   m_Layer: 8
   m_Name: ElementName
   m_TagString: Untagged
@@ -1964,17 +1963,6 @@ MonoBehaviour:
   ElectronShellMeshes: []
   ProtonMat: {fileID: 2100000, guid: eda2dfd90c9e1a1469b041fed9ec792a, type: 2}
   NeutronMat: {fileID: 2100000, guid: 598fa28f9a406b24097d38099e853063, type: 2}
---- !u!114 &114009888369327148
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1578431669531404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114037026111533712
 MonoBehaviour:
   m_ObjectHideFlags: 1
