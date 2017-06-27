@@ -1,0 +1,3 @@
+[submodule "Assets/MRDesignLab"]
+	path = Assets/MRDesignLab
+	url = https://github.com/Microsoft/MRDesignLabs_Unity_Tools.git
