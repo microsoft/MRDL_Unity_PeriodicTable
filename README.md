@@ -34,8 +34,17 @@ The **ObjectCollectionMode** script inherits from one of HUX's most powerful too
 If you're rapidly prototyping, using the button's name to differentiate input is a quick way to get things done. You could also create a custom component that information relevant to a button's function. This only scratches the surface of the **InteractionReceiver class** - we’ll be exploring it in full elsewhere.
 
 # More from Mixed Reality Design Labs #
-**Common Controls Examples**
+## Common controls and examples ##
 https://github.com/Microsoft/MRDesignLabs_Unity
+
+<img src="https://github.com/Microsoft/MRDesignLabs_Unity/blob/master/External/ReadMeImages/InteractibleObject_Hero.jpg">
+<img src="https://github.com/Microsoft/MRDesignLabs_Unity/blob/master/External/ReadMeImages/HolobarAndBoundingBox_Hero.jpg">
+
+## Sample app - Lunar Module ##
+<img src="https://github.com/Microsoft/MRDesignLabs_Unity_LunarModule/blob/master/External/ReadMeImages/LM_hero.jpg" alt="Lunar Module sample app">
+https://github.com/Microsoft/MRDesignLabs_Unity_LunarModule
+
+Lunar Module is a open-source sample app from Microsoft's Mixed Reality Design Labs, it is a spiritual sequel to the 1979 Atari classic, *Lunar Lander*. This sample app will demonstrate how to extend Hololens' base gestures with two hand tracking and xbox controller input, reactive objects to surface mapping and plane finding, and simple menu systems. You can use this project's components to create your own mixed reality app experience. 
 
 
 
