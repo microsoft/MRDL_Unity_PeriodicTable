@@ -12,6 +12,7 @@ Material:
     _USEMAINCOLOR_ON _USEVERTEXCOLOR_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
