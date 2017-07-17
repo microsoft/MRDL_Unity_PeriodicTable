@@ -25,6 +25,9 @@ ExportedObj/
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
 
+# UWP directory
+/UWP/**
+
 # Builds
 *.apk
 *.unitypackage
