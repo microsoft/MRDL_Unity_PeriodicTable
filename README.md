@@ -1,13 +1,23 @@
 # Mixed Reality Design Labs
 This repo is where Microsoft's Windows Mixed Reality Design team publishes examples and explorations. The goal is to inspire creators and help them to build Mixed Reality experiences. We share sample app projects here that demonstrate how to use various types of common controls and patterns in Mixed Reality. Find out details about common controls and sample apps on https://developer.microsoft.com/en-us/windows/mixed-reality/design
 
-# Important: Adding submodule MRDesignLab
-As soon as you clone the repo, init and update submodule with git command:
-### cd MRDesignLabs_Unity
-### "git submodule init"
-### "git submodule update"
-This will add [HUX and related tools](https://github.com/Microsoft/MRDesignLabs_Unity_tools) under Assets/MRDesignLab/ folder
+# Supported Unity version: 2017.1.0f3
+The current supported version of Unity is [**Unity 2017.1.0f3**](https://unity3d.com/get-unity/download?thank-you=update&download_nid=47505&os=Win).  If you are looking to have support for previous versions of Unity please check under **[Releases](https://github.com/Microsoft/MRDesignLabs_Unity/releases)**.
 
+# Important: Requires submodule MRDesignLab
+As soon as you clone the repo, init and update submodule with git command:
+```
+cd MRDesignLabs_Unity
+git submodule init
+git submodule update
+```
+
+To update the submodules you'll still need to pull from master by either going into the individual submodule directory and doing a git pull or by doing the following command to do pulls on all the submodules:
+```
+git submodule foreach git pull
+```
+
+This will add [HUX and related tools](https://github.com/Microsoft/MRDesignLabs_Unity_tools) under Assets/MRDesignLab/ folder
 # Periodic Table of the Elements
 <img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Hero.jpg" alt="Periodic Table of the Elements">
 
