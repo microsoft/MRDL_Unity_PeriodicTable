@@ -9,7 +9,10 @@ Periodic Table of the Elements is an open-source sample app from Microsoft's Mix
 
 
 # Supported Unity version: 2017.2.0P1-MRTP4
-The current supported version of Unity is [**Unity 2017.2.0p1-MRTP4**](http://beta.unity3d.com/download/b1565bfe4a0c/UnityDownloadAssistant.exe).  If you are looking to have support for previous versions of Unity please check under **[Releases](https://github.com/Microsoft/MRDesignLabs_Unity/releases)**.
+The current supported version of Unity is [**Unity 2017.2.0p1-MRTP4**](http://beta.unity3d.com/download/b1565bfe4a0c/UnityDownloadAssistant.exe). 
+
+# Supported device
+HoloLens and Immersive headset with motion controllers
 
 
 # Technical Details
