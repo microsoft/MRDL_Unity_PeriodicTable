@@ -2,7 +2,12 @@
 This repo is where Microsoft's Windows Mixed Reality Design team publishes sample apps and experiments. Find out details on https://developer.microsoft.com/en-us/windows/mixed-reality/periodic_table_of_the_elements
 
 # Periodic Table of the Elements
-Periodic Table of the Elements is an open-source sample app from Microsoft's Mixed Reality Design Labs. With this project, you can learn how to layout an array of objects in 3D space with various surface types using [Object Collection](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md). Also learn how to create objects that respond to the standard inputs from HoloLens and Immersive headset's motion controllers, using  [Interactable Object](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md). You can use this project's components to create your own mixed reality app experiences. 
+Periodic Table of the Elements is an open-source sample app from Microsoft's Mixed Reality Design Labs. It demonstrates how to use [Mixed Reality Toolkit(MRTK)](https://github.com/Microsoft/MixedRealityToolkit-Unity)'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. With this project, you can learn following topics:
+- Use MixedRealityCamera and input system for HoloLens gesture input and Immersive headset's motion controller input
+- Layout an array of objects in 3D space with various surface types using MRTK's [Object Collection](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md). 
+- Create objects that respond to the standard inputs using MRTK's [Interactable Object](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md). 
+
+You can use this project's components to create your own mixed reality app experiences. 
 
 <img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Hero.jpg" alt="Periodic Table of the Elements">
 
@@ -12,7 +17,8 @@ Periodic Table of the Elements is an open-source sample app from Microsoft's Mix
 The current supported version of Unity is [**Unity 2017.2.0p1-MRTP4**](http://beta.unity3d.com/download/b1565bfe4a0c/UnityDownloadAssistant.exe). 
 
 # Supported device
-HoloLens and Immersive headset with motion controllers
+- [HoloLens](https://www.hololens.com)
+- [Immersive headset with motion controllers](https://www.microsoft.com/en-us/windows/windows-mixed-reality)
 
 
 # Technical Details
