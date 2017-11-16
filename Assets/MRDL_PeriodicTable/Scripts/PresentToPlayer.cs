@@ -4,8 +4,9 @@
 //
 using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.WSA;
 
-namespace HUX
+namespace HoloToolkit.MRDL.PeriodicTable
 {
     public class PresentToPlayer : MonoBehaviour
     {
@@ -37,6 +38,10 @@ namespace HUX
         bool returning = false;
         bool inPosition = false;
 
+        public void Awake()
+        {
+            PresentationDistance = HolographicSettings.IsDisplayOpaque ? 0.5f : 1f;
+        }
         public void Present()
         {
             if (presenting)
