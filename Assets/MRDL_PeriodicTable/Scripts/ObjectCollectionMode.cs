@@ -2,12 +2,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using HUX.Collections;
-using HUX.Interaction;
-using HUX.Receivers;
+using HoloToolkit.Unity;
+using HoloToolkit.Unity.Buttons;
+using HoloToolkit.Unity.Collections;
+using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity.Receivers;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace HUX
+namespace HoloToolkit.MRDL.PeriodicTable
 {
     /// <summary>
     /// Receives button input and sets object collection display mode
@@ -25,7 +28,7 @@ namespace HUX
 
         public ObjectCollection TargetCollection;
 
-        protected override void OnTapped(GameObject obj, InteractionManager.InteractionEventArgs eventArgs)
+        protected override void InputDown(GameObject obj, InputEventData eventData)
         {
             Debug.Log(obj.name);
             switch (obj.name)
@@ -36,27 +39,26 @@ namespace HUX
                     TargetCollection.transform.localPosition = HomeOffset;
                     break;
                 case "SurfaceTypeButtonPlane":
-                    TargetCollection.SurfaceType = ObjectCollection.SurfaceTypeEnum.Plane;
+                    TargetCollection.SurfaceType = SurfaceTypeEnum.Plane;
                     TargetCollection.transform.localPosition = PlaneOffset;
                     TargetCollection.Radius = PlaneRadius;
                     TargetCollection.UpdateCollection();
                     break;
 
                 case "SurfaceTypeButtonSphere":
-                    TargetCollection.SurfaceType = ObjectCollection.SurfaceTypeEnum.Sphere;
+                    TargetCollection.SurfaceType = SurfaceTypeEnum.Sphere;
                     TargetCollection.transform.localPosition = SphereOffset;
                     TargetCollection.Radius = SphereRadius;
                     TargetCollection.UpdateCollection();
                     break;
 
                 case "SurfaceTypeButtonCylinder":
-                    TargetCollection.SurfaceType = ObjectCollection.SurfaceTypeEnum.Cylinder;
+                    TargetCollection.SurfaceType = SurfaceTypeEnum.Cylinder;
                     TargetCollection.transform.localPosition = CylinderOffset;
                     TargetCollection.Radius = CylinderRadius;
                     TargetCollection.UpdateCollection();
                     break;
             }
-            base.OnTapped(obj, eventArgs);
         }
     }
 }
