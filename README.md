@@ -1,13 +1,16 @@
 # Mixed Reality Design Labs
-This repo is where Microsoft's Windows Mixed Reality Design team publishes examples and explorations. The goal is to inspire creators and help them to build Mixed Reality experiences. We share sample app projects here that demonstrate how to use various types of common controls and patterns in Mixed Reality. Find out details about common controls and sample apps on https://developer.microsoft.com/en-us/windows/mixed-reality/design
-
-# Supported Unity version: 2017.1.0f3
-The current supported version of Unity is [**Unity 2017.1.0f3**](https://unity3d.com/get-unity/download?thank-you=update&download_nid=47505&os=Win).  If you are looking to have support for previous versions of Unity please check under **[Releases](https://github.com/Microsoft/MRDesignLabs_Unity/releases)**.
+This repo is where Microsoft's Windows Mixed Reality Design team publishes sample apps and experiments. Find out details on https://developer.microsoft.com/en-us/windows/mixed-reality/periodic_table_of_the_elements
 
 # Periodic Table of the Elements
+Periodic Table of the Elements is a open-source sample app from Microsoft's Mixed Reality Design Labs. With this project, you can learn how to layout an array of objects in 3D space with various surface types using [Object Collection](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md). Also learn how to create objects that respond to the standard inputs from HoloLens and Immersive headset's motion controllers, using  [Interactable Object](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md). You can use this project's components to create your own mixed reality app experiences. 
+
 <img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Hero.jpg" alt="Periodic Table of the Elements">
 
-Periodic Table of the Elements is a open-source sample app from Microsoft's Mixed Reality Design Lab. With this project, you can learn how to layout an array of objects in 3D space with various surface types using Object collection. Also learn how to create interactable objects that respond to standard inputs from HoloLens. You can use this project's components to create your own mixed reality app experiences. 
+
+
+# Supported Unity version: 2017.2.0P1-MRTP4
+The current supported version of Unity is [**Unity 2017.2.0p1-MRTP4**](http://beta.unity3d.com/download/b1565bfe4a0c/UnityDownloadAssistant.exe).  If you are looking to have support for previous versions of Unity please check under **[Releases](https://github.com/Microsoft/MRDesignLabs_Unity/releases)**.
+
 
 # Technical Details
 
