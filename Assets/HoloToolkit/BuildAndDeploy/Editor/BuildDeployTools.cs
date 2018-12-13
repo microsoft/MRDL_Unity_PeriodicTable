@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class BuildDeployTools
     {
-        public static readonly string DefaultMSBuildVersion = "15.0";
+        public const string DefaultMSBuildVersion = "15.0";
 
         public static bool CanBuild()
         {
@@ -56,6 +56,14 @@ namespace HoloToolkit.Unity
             return true;
         }
 
+        /// <summary>
+        /// Do a build configured for Mixed Reality Applications, returns the error from BuildPipeline.BuildPlayer
+        /// </summary>
+        public static bool BuildSLN()
+        {
+            return BuildSLN(BuildDeployPrefs.BuildDirectory, false);
+        }
+
         public static bool BuildSLN(string buildDirectory, bool showDialog = true)
         {
             // Use BuildSLNUtilities to create the SLN
@@ -77,12 +85,21 @@ namespace HoloToolkit.Unity
                 WSAUwpSdk = EditorUserBuildSettings.wsaUWPSDK,
 
                 // Configure a post build action that will compile the generated solution
+#if UNITY_2018_1_OR_NEWER
+                PostBuildAction = (innerBuildInfo, buildReport) =>
+                {
+                    if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
+                    {
+                        EditorUtility.DisplayDialog(string.Format("{0} WindowsStoreApp Build {1}!", PlayerSettings.productName, buildReport.summary.result), "See console for details", "OK");
+                    }
+#else
                 PostBuildAction = (innerBuildInfo, buildError) =>
                 {
                     if (!string.IsNullOrEmpty(buildError))
                     {
-                        EditorUtility.DisplayDialog(PlayerSettings.productName + " WindowsStoreApp Build Failed!", buildError, "OK");
+                        EditorUtility.DisplayDialog(string.Format("{0} WindowsStoreApp Build Failed!", PlayerSettings.productName), buildError, "OK");
                     }
+#endif
                     else
                     {
                         if (showDialog)
@@ -134,7 +151,7 @@ namespace HoloToolkit.Unity
             // For MSBuild 15+ we should to use vswhere to give us the correct instance
             string output = @"/C vswhere -version " + msBuildVersion + " -products * -requires Microsoft.Component.MSBuild -property installationPath";
 
-            // get the right program files path based on whether the pc is x86 or x64
+            // get the right program files path based on whether the PC is x86 or x64
             string programFiles = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer";
 
             var vswherePInfo = new ProcessStartInfo
@@ -175,6 +192,9 @@ namespace HoloToolkit.Unity
 
         public static bool RestoreNugetPackages(string nugetPath, string storePath)
         {
+            Debug.Assert(File.Exists(nugetPath));
+            Debug.Assert(Directory.Exists(storePath));
+
             var nugetPInfo = new ProcessStartInfo
             {
                 FileName = nugetPath,
@@ -212,7 +232,7 @@ namespace HoloToolkit.Unity
 
             if (!File.Exists(msBuildPath))
             {
-                Debug.LogErrorFormat("MSBuild.exe is missing or invalid (path={0}).", msBuildPath);
+                Debug.LogErrorFormat("MSBuild.exe is missing or invalid:\n{0}.", msBuildPath);
                 EditorUtility.ClearProgressBar();
                 return false;
             }
@@ -229,15 +249,17 @@ namespace HoloToolkit.Unity
                 File.Copy(unity + @"\Data\PlaybackEngines\MetroSupport\Tools\project.json", storePath + "\\project.json");
             }
 
+            string assemblyCSharp = string.Format("{0}/GeneratedProjects/UWP/Assembly-CSharp", storePath);
+            string assemblyCSharpFirstPass = string.Format("{0}/GeneratedProjects/UWP/Assembly-CSharp-firstpass", storePath);
+            bool restoreFirstPass = Directory.Exists(assemblyCSharpFirstPass);
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
 
-            // Before building, need to run a nuget restore to generate a json.lock file. Failing to do
-            // this breaks the build in VS RTM
+            // Before building, need to run a nuget restore to generate a json.lock file. Failing to do this breaks the build in VS RTM
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET &&
                 (!RestoreNugetPackages(nugetPath, storePath) ||
                  !RestoreNugetPackages(nugetPath, storePath + "\\" + productName) ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp") ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, storePath + "/GeneratedProjects/UWP/Assembly-CSharp-firstpass")))
+                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, assemblyCSharp) ||
+                 EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !RestoreNugetPackages(nugetPath, assemblyCSharpFirstPass)))
             {
                 Debug.LogError("Failed to restore nuget packages");
                 EditorUtility.ClearProgressBar();
@@ -246,18 +268,22 @@ namespace HoloToolkit.Unity
 
             EditorUtility.DisplayProgressBar("Build AppX", "Building AppX Package...", 25);
 
-            // Ensure that the generated .appx version increments by modifying
-            // Package.appxmanifest
-            if (incrementVersion)
+            // Ensure that the generated .appx version increments by modifying Package.appxmanifest
+            if (!SetPackageVersion(incrementVersion))
             {
-                IncrementPackageVersion();
+                Debug.LogError("Failed to increment package version!");
+                EditorUtility.ClearProgressBar();
+                return false;
             }
 
             // Now do the actual build
             var pInfo = new ProcessStartInfo
             {
                 FileName = msBuildPath,
-                CreateNoWindow = false,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
                 Arguments = string.Format("\"{0}\" /t:{1} /p:Configuration={2} /p:Platform={3} /verbosity:m",
                     solutionProjectPath,
                     forceRebuildAppx ? "Rebuild" : "Build",
@@ -265,44 +291,69 @@ namespace HoloToolkit.Unity
                     buildPlatform)
             };
 
-            // Uncomment out to debug by copying into command window
-            //Debug.Log("\"" + vs + "\"" + " " + pInfo.Arguments);
-
-            var process = new Process { StartInfo = pInfo };
+            var process = new Process
+            {
+                StartInfo = pInfo,
+                EnableRaisingEvents = true
+            };
 
             try
             {
+                process.ErrorDataReceived += (sender, args) =>
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                    {
+                        Debug.LogError(args.Data);
+                    }
+                };
+
+                process.OutputDataReceived += (sender, args) =>
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                    {
+                        Debug.Log(args.Data);
+                    }
+                };
+
                 if (!process.Start())
                 {
-                    Debug.LogError("Failed to start Cmd process!");
+                    Debug.LogError("Failed to start process!");
                     EditorUtility.ClearProgressBar();
+                    process.Close();
+                    process.Dispose();
                     return false;
                 }
 
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
                 process.WaitForExit();
 
                 EditorUtility.ClearProgressBar();
 
-                if (process.ExitCode == 0 &&
-                    showDialog &&
-                    !EditorUtility.DisplayDialog("Build AppX", "AppX Build Successful!", "OK", "Open Project Folder"))
+                if (process.ExitCode == 0 && showDialog &&
+                    !EditorUtility.DisplayDialog("Build AppX", "AppX Build Successful!", "OK", "Open AppX Folder"))
                 {
-                    Process.Start("explorer.exe", "/select," + storePath);
+                    Process.Start("explorer.exe", string.Format("/f /open,{0}/{1}/AppPackages", Path.GetFullPath(BuildDeployPrefs.BuildDirectory), PlayerSettings.productName));
                 }
 
                 if (process.ExitCode != 0)
                 {
-                    Debug.LogError("MSBuild error (code = " + process.ExitCode + ")");
+                    Debug.LogError(string.Format("MSBuild error (code = {0})", process.ExitCode));
+                    EditorUtility.ClearProgressBar();
                     EditorUtility.DisplayDialog(PlayerSettings.productName + " build Failed!", "Failed to build appx from solution. Error code: " + process.ExitCode, "OK");
+
+                    process.Close();
+                    process.Dispose();
                     return false;
                 }
 
                 process.Close();
                 process.Dispose();
-
             }
             catch (Exception e)
             {
+                process.Close();
+                process.Dispose();
                 Debug.LogError("Cmd Process EXCEPTION: " + e);
                 EditorUtility.ClearProgressBar();
                 return false;
@@ -311,15 +362,15 @@ namespace HoloToolkit.Unity
             return true;
         }
 
-        private static void IncrementPackageVersion()
+        private static bool SetPackageVersion(bool increment)
         {
             // Find the manifest, assume the one we want is the first one
             string[] manifests = Directory.GetFiles(BuildDeployPrefs.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
 
             if (manifests.Length == 0)
             {
-                Debug.LogError("Unable to find Package.appxmanifest file for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ")");
-                return;
+                Debug.LogError(string.Format("Unable to find Package.appxmanifest file for build (in path - {0})", BuildDeployPrefs.AbsoluteBuildDirectory));
+                return false;
             }
 
             string manifest = manifests[0];
@@ -328,8 +379,8 @@ namespace HoloToolkit.Unity
 
             if (identityNode == null)
             {
-                Debug.LogError("Package.appxmanifest for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ") is missing an <Identity /> node");
-                return;
+                Debug.LogError(string.Format("Package.appxmanifest for build (in path - {0}) is missing an <Identity /> node", BuildDeployPrefs.AbsoluteBuildDirectory));
+                return false;
             }
 
             // We use XName.Get instead of string -> XName implicit conversion because
@@ -339,18 +390,21 @@ namespace HoloToolkit.Unity
 
             if (versionAttr == null)
             {
-                Debug.LogError("Package.appxmanifest for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ") is missing a version attribute in the <Identity /> node.");
-                return;
+                Debug.LogError(string.Format("Package.appxmanifest for build (in path - {0}) is missing a version attribute in the <Identity /> node.", BuildDeployPrefs.AbsoluteBuildDirectory));
+                return false;
             }
 
-            // Assume package version always has a '.'.
+            // Assume package version always has a '.' between each number.
             // According to https://msdn.microsoft.com/en-us/library/windows/apps/br211441.aspx
-            // Package versions are always of the form Major.Minor.Build.Revision
-            var version = new Version(versionAttr.Value);
-            var newVersion = new Version(version.Major, version.Minor, version.Build, version.Revision + 1);
+            // Package versions are always of the form Major.Minor.Build.Revision.
+            // Note: Revision number reserved for Windows Store, and a value other than 0 will fail WACK.
+            var version = PlayerSettings.WSA.packageVersion;
+            var newVersion = new Version(version.Major, version.Minor, increment ? version.Build + 1 : version.Build, version.Revision);
 
+            PlayerSettings.WSA.packageVersion = newVersion;
             versionAttr.Value = newVersion.ToString();
             rootNode.Save(manifest);
+            return true;
         }
     }
 }

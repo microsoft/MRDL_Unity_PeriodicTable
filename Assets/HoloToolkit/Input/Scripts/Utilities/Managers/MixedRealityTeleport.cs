@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-
 using System;
 using UnityEngine;
 
@@ -27,20 +26,35 @@ namespace HoloToolkit.Unity.InputModule
     public class MixedRealityTeleport : Singleton<MixedRealityTeleport>, IControllerInputHandler
     {
         [Tooltip("Name of the thumbstick axis to check for teleport and strafe.")]
-        public string LeftThumbstickX = "CONTROLLER_LEFT_STICK_HORIZONTAL";
+        public XboxControllerMappingTypes HorizontalStrafe = XboxControllerMappingTypes.XboxLeftStickHorizontal;
 
-        [Tooltip("Name of the thumbstick axis to check for teleport and strafe.")]
-        public string LeftThumbstickY = "CONTROLLER_LEFT_STICK_VERTICAL";
-
-        [Tooltip("Name of the thumbstick axis to check for rotation.")]
-        public string RightThumbstickX = "CONTROLLER_RIGHT_STICK_HORIZONTAL";
+        [Tooltip("Name of the thumbstick axis to check for movement forwards and backwards.")]
+        public XboxControllerMappingTypes ForwardMovement = XboxControllerMappingTypes.XboxLeftStickVertical;
 
         [Tooltip("Name of the thumbstick axis to check for rotation.")]
-        public string RightThumbstickY = "CONTROLLER_RIGHT_STICK_VERTICAL";
+        public XboxControllerMappingTypes HorizontalRotation = XboxControllerMappingTypes.XboxRightStickHorizontal;
+
+        [Tooltip("Name of the thumbstick axis to check for rotation.")]
+        public XboxControllerMappingTypes VerticalRotation = XboxControllerMappingTypes.XboxRightStickVertical;
+
+        [Tooltip("Custom Input Mapping for horizontal teleport and strafe")]
+        public string LeftThumbstickX = InputMappingAxisUtility.CONTROLLER_LEFT_STICK_HORIZONTAL;
+
+        [Tooltip("Name of the thumbstick axis to check for movement forwards and backwards.")]
+        public string LeftThumbstickY = InputMappingAxisUtility.CONTROLLER_LEFT_STICK_VERTICAL;
+
+        [Tooltip("Custom Input Mapping for horizontal rotation")]
+        public string RightThumbstickX = InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_HORIZONTAL;
+
+        [Tooltip("Custom Input Mapping for vertical rotation")]
+        public string RightThumbstickY = InputMappingAxisUtility.CONTROLLER_RIGHT_STICK_VERTICAL;
 
         public bool EnableTeleport = true;
         public bool EnableRotation = true;
         public bool EnableStrafe = true;
+
+        [Tooltip("Makes sure you don't get put 'on top' of holograms, just on the floor. If true, your height won't change as a result of a teleport.")]
+        public bool StayOnTheFloor = false;
 
         public float RotationSize = 45.0f;
         public float StrafeAmount = 0.5f;
@@ -49,11 +63,14 @@ namespace HoloToolkit.Unity.InputModule
         private GameObject teleportMarker;
         private Animator animationController;
 
+        [SerializeField]
+        private bool useCustomMapping = false;
+
         /// <summary>
         /// The fade control allows us to fade out and fade in the scene.
         /// This is done to improve comfort when using an immersive display.
         /// </summary>
-        private FadeScript fadeControl;
+        private FadeManager fadeControl;
 
         private bool isTeleportValid;
         private IPointingSource currentPointingSource;
@@ -61,23 +78,32 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
-            fadeControl = FadeScript.Instance;
-
+            // If we're on the HoloLens or no device is present,
+            // remove this component.
 #if UNITY_2017_2_OR_NEWER
-            if (!XRDevice.isPresent ||
+            if (!XRDevice.isPresent
 #if UNITY_WSA
-                !HolographicSettings.IsDisplayOpaque ||
+                || !HolographicSettings.IsDisplayOpaque
 #endif
-                fadeControl == null)
+            )
 #else
-            if (VRDevice.isPresent || fadeControl == null)
+            if (VRDevice.isPresent)
 #endif
             {
-                if (fadeControl == null)
-                {
-                    Debug.LogError("The MixedRealityTeleport script on " + name + " requires a FadeScript object.");
-                }
+                Destroy(this);
+                return;
+            }
 
+            // FadeManager isn't checked unless we're in a
+            // setup where it might be supported.
+            FadeManager.AssertIsInitialized();
+
+            fadeControl = FadeManager.Instance;
+
+            // If the FadeManager is missing,
+            // remove this component.
+            if (fadeControl == null)
+            {
                 Destroy(this);
                 return;
             }
@@ -114,8 +140,8 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (EnableTeleport && !fadeControl.Busy)
             {
-                float leftX = Input.GetAxis(LeftThumbstickX);
-                float leftY = Input.GetAxis(LeftThumbstickY);
+                float leftX = Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
+                float leftY = Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
 
                 if (currentPointingSource == null && leftY > 0.8 && Math.Abs(leftX) < 0.3)
                 {
@@ -132,8 +158,8 @@ namespace HoloToolkit.Unity.InputModule
 
             if (EnableStrafe && currentPointingSource == null && !fadeControl.Busy)
             {
-                float leftX = Input.GetAxis(LeftThumbstickX);
-                float leftY = Input.GetAxis(LeftThumbstickY);
+                float leftX = Input.GetAxis(useCustomMapping ? LeftThumbstickX : XboxControllerMapping.GetMapping(HorizontalStrafe));
+                float leftY = Input.GetAxis(useCustomMapping ? LeftThumbstickY : XboxControllerMapping.GetMapping(ForwardMovement));
 
                 if (leftX < -0.8 && Math.Abs(leftY) < 0.3)
                 {
@@ -151,8 +177,8 @@ namespace HoloToolkit.Unity.InputModule
 
             if (EnableRotation && currentPointingSource == null && !fadeControl.Busy)
             {
-                float rightX = Input.GetAxis(RightThumbstickX);
-                float rightY = Input.GetAxis(RightThumbstickY);
+                float rightX = Input.GetAxis(useCustomMapping ? RightThumbstickX : XboxControllerMapping.GetMapping(HorizontalRotation));
+                float rightY = Input.GetAxis(useCustomMapping ? RightThumbstickY : XboxControllerMapping.GetMapping(VerticalRotation));
 
                 if (rightX < -0.8 && Math.Abs(rightY) < 0.3)
                 {
@@ -224,12 +250,9 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (isTeleportValid)
                 {
-                    RaycastHit hitInfo;
-                    Vector3 hitPos = teleportMarker.transform.position + Vector3.up * (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
-
                     fadeControl.DoFade(0.25f, 0.5f, () =>
                     {
-                        SetWorldPosition(hitPos);
+                        SetWorldPosition(teleportMarker.transform.position);
                     }, null);
                 }
 
@@ -277,7 +300,24 @@ namespace HoloToolkit.Unity.InputModule
             // and the user's head (which the MR device is attached to. :)). When setting the world position,
             // we need to set it relative to the user's head in the scene so they are looking/standing where 
             // we expect.
-            transform.position = worldPosition - (CameraCache.Main.transform.position - transform.position);
+            var newPosition = worldPosition - (CameraCache.Main.transform.position - transform.position);
+
+            // If we're Stationary, we'll need to raycast to estimate our height. In RoomScale, that will be accounted for by the offset between the camera and its parent.
+#if UNITY_2017_2_OR_NEWER
+            if (XRDevice.GetTrackingSpaceType() == TrackingSpaceType.Stationary && !StayOnTheFloor)
+#else
+            if (VRDevice.GetTrackingSpaceType() == TrackingSpaceType.Stationary && !StayOnTheFloor)
+#endif
+            {
+                RaycastHit hitInfo;
+                newPosition.y += (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 1.7f);
+            }
+            else
+            {
+                newPosition.y = StayOnTheFloor ? transform.position.y : worldPosition.y;
+            }
+
+            transform.position = newPosition;
         }
 
         private void EnableMarker()

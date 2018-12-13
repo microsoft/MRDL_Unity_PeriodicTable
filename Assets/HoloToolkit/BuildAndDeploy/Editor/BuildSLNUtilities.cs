@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
+
+#if UNITY_2018_1_OR_NEWER
+using UnityEditor.Build.Reporting;
+#endif
 
 namespace HoloToolkit.Unity
 {
@@ -53,10 +56,17 @@ namespace HoloToolkit.Unity
         /// </summary>
         public static event Action<BuildInfo> BuildStarted;
 
+#if UNITY_2018_1_OR_NEWER
+        /// <summary>
+        /// Event triggered when a build completes.
+        /// </summary>
+        public static event Action<BuildInfo, BuildReport> BuildCompleted;
+#else
         /// <summary>
         /// Event triggered when a build completes.
         /// </summary>
         public static event Action<BuildInfo, string> BuildCompleted;
+#endif
 
         public static void PerformBuild(BuildInfo buildInfo)
         {
@@ -126,34 +136,46 @@ namespace HoloToolkit.Unity
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, buildInfo.BuildSymbols);
             }
 
-            string buildError = "Error";
+            // For the WSA player, Unity builds into a target directory.
+            // For other players, the OutputPath parameter indicates the
+            // path to the target executable to build.
+            if (buildInfo.BuildTarget == BuildTarget.WSAPlayer)
+            {
+                Directory.CreateDirectory(buildInfo.OutputDirectory);
+            }
+
+            OnPreProcessBuild(buildInfo);
+
+            EditorUtility.DisplayProgressBar("Build Pipeline", "Gathering Build data...", 0.25f);
+
+#if UNITY_2018_1_OR_NEWER
+            BuildReport buildReport = default(BuildReport);
+#else
+            string buildReport = "ERROR";
+#endif
             try
             {
-                VerifyWsaUwpSdkIsInstalled(EditorUserBuildSettings.wsaUWPSDK);
-
-                // For the WSA player, Unity builds into a target directory.
-                // For other players, the OutputPath parameter indicates the
-                // path to the target executable to build.
-                if (buildInfo.BuildTarget == BuildTarget.WSAPlayer)
-                {
-                    Directory.CreateDirectory(buildInfo.OutputDirectory);
-                }
-
-                OnPreProcessBuild(buildInfo);
-                buildError = BuildPipeline.BuildPlayer(
+                buildReport = BuildPipeline.BuildPlayer(
                     buildInfo.Scenes.ToArray(),
                     buildInfo.OutputDirectory,
                     buildInfo.BuildTarget,
                     buildInfo.BuildOptions);
 
-                if (buildError.StartsWith("Error"))
+#if UNITY_2018_1_OR_NEWER
+                if (buildReport.summary.result != BuildResult.Succeeded)
                 {
-                    throw new Exception(buildError);
+                    throw new Exception(string.Format("Build Result: {0}", buildReport.summary.result.ToString()));
                 }
+#else
+                if (buildReport.StartsWith("Error"))
+                {
+                    throw new Exception(buildReport);
+                }
+#endif
             }
             finally
             {
-                OnPostProcessBuild(buildInfo, buildError);
+                OnPostProcessBuild(buildInfo, buildReport);
 
                 if (buildInfo.BuildTarget == BuildTarget.WSAPlayer && EditorUserBuildSettings.wsaGenerateReferenceProjects)
                 {
@@ -163,63 +185,11 @@ namespace HoloToolkit.Unity
                 PlayerSettings.colorSpace = oldColorSpace;
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, oldBuildSymbols);
 
-                if (oldWSAUWPBuildType.HasValue)
-                {
-                    EditorUserBuildSettings.wsaUWPBuildType = oldWSAUWPBuildType.Value;
-                }
+                EditorUserBuildSettings.wsaUWPBuildType = oldWSAUWPBuildType.Value;
 
                 EditorUserBuildSettings.wsaGenerateReferenceProjects = oldWSAGenerateReferenceProjects;
-
                 EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTargetGroup, oldBuildTarget);
             }
-        }
-
-        private static void VerifyWsaUwpSdkIsInstalled(string wsaUwpSdk)
-        {
-            if (string.IsNullOrEmpty(wsaUwpSdk))
-            {
-                // Unity uses a null or empty string to mean "use the latest sdk that's installed", so we don't need to
-                // verify any particular version.
-                return;
-            }
-
-            IEnumerable<Version> uwpSdksAvailable;
-            try
-            {
-                // In order to get the same list of SDKs that the Unity build settings "UWP SDK" box has, we call into an
-                // internal Unity function.  If Unity changes how its internals work, we'll need to update this code.
-                Type uwpReferencesType = typeof(Editor).Assembly.GetType("UnityEditor.Scripting.Compilers.UWPReferences", throwOnError: false);
-
-                MethodInfo uwpReferencesMethod = uwpReferencesType == null
-                    ? null
-                    : uwpReferencesType.GetMethod("GetInstalledSDKVersions");
-
-                uwpSdksAvailable = uwpReferencesMethod == null
-                    ? null
-                    : uwpReferencesMethod.Invoke(null, null) as IEnumerable<Version>;
-            }
-            catch
-            {
-                uwpSdksAvailable = null;
-            }
-
-            if (uwpSdksAvailable == null)
-            {
-                Debug.LogWarningFormat("Couldn't verify that UWP SDK \"{0}\" is installed. You better make sure it's installed"
-                                    + " and available in your Unity Build settings menu, or you may get unexpected build breaks or runtime"
-                                    + " behavior.",
-                    wsaUwpSdk
-                );
-            }
-            else if (!uwpSdksAvailable.Select(version => version.ToString()).Contains(wsaUwpSdk))
-            {
-                throw new Exception(string.Format("UWP SDK \"{0}\" is not installed. Please install it and try building again. If"
-                                               + " you really want to build without that SDK, build directly from Unity's Build settings menu instead.",
-                    wsaUwpSdk
-                ));
-            }
-
-            // The SDK is verified installed. All is right with the world!
         }
 
         public static void ParseBuildCommandLine(ref BuildInfo buildInfo)
@@ -277,9 +247,13 @@ namespace HoloToolkit.Unity
                 Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
 
                 // Configure a post build action to throw appropriate error code.
-                PostBuildAction = (innerBuildInfo, buildError) =>
+                PostBuildAction = (innerBuildInfo, buildReport) =>
                 {
-                    if (!string.IsNullOrEmpty(buildError))
+#if UNITY_2018_1_OR_NEWER
+                    if (buildReport.summary.result != BuildResult.Succeeded)
+#else
+                    if (!string.IsNullOrEmpty(buildReport))
+#endif
                     {
                         EditorApplication.Exit(1);
                     }
@@ -287,9 +261,7 @@ namespace HoloToolkit.Unity
             };
 
             RaiseOverrideBuildDefaults(ref buildInfo);
-
             ParseBuildCommandLine(ref buildInfo);
-
             PerformBuild(buildInfo);
         }
 
@@ -475,14 +447,21 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private static void OnPostProcessBuild(BuildInfo buildInfo, string buildError)
+
+#if UNITY_2018_1_OR_NEWER
+        private static void OnPostProcessBuild(BuildInfo buildInfo, BuildReport buildReport)
         {
-            if (string.IsNullOrEmpty(buildError))
+            if (buildReport.summary.result == BuildResult.Succeeded)
+#else
+        private static  void OnPostProcessBuild(BuildInfo buildInfo, string buildReport)
+        {
+            if (string.IsNullOrEmpty(buildReport))
+#endif
             {
+                string outputProjectDirectoryPath = Path.Combine(GetProjectPath(), buildInfo.OutputDirectory);
                 if (buildInfo.CopyDirectories != null)
                 {
                     string inputProjectDirectoryPath = GetProjectPath();
-                    string outputProjectDirectoryPath = Path.Combine(GetProjectPath(), buildInfo.OutputDirectory);
                     foreach (var directory in buildInfo.CopyDirectories)
                     {
                         CopyDirectory(inputProjectDirectoryPath, outputProjectDirectoryPath, directory);
@@ -491,12 +470,12 @@ namespace HoloToolkit.Unity
             }
 
             // Raise the global event for listeners
-            BuildCompleted.RaiseEvent(buildInfo, buildError);
+            BuildCompleted.RaiseEvent(buildInfo, buildReport);
 
             // Call the post-build action, if any
             if (buildInfo.PostBuildAction != null)
             {
-                buildInfo.PostBuildAction(buildInfo, buildError);
+                buildInfo.PostBuildAction(buildInfo, buildReport);
             }
         }
 

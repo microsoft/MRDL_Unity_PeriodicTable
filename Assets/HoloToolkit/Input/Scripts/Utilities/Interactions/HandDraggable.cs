@@ -64,6 +64,7 @@ namespace HoloToolkit.Unity.InputModule
         private IInputSource currentInputSource;
         private uint currentInputSourceId;
         private Rigidbody hostRigidbody;
+        private bool hostRigidbodyWasKinematic;
 
         private void Start()
         {
@@ -118,6 +119,11 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.PushModalInputHandler(gameObject);
 
             isDragging = true;
+            if (hostRigidbody != null)
+            {
+                hostRigidbodyWasKinematic = hostRigidbody.isKinematic;
+                hostRigidbody.isKinematic = true;
+            }
 
             Transform cameraTransform = CameraCache.Main.transform;
 
@@ -293,6 +299,10 @@ namespace HoloToolkit.Unity.InputModule
             isDragging = false;
             currentInputSource = null;
             currentInputSourceId = 0;
+            if (hostRigidbody != null)
+            {
+                hostRigidbody.isKinematic = hostRigidbodyWasKinematic;
+            }
             StoppedDragging.RaiseEvent();
         }
 
@@ -350,19 +360,19 @@ namespace HoloToolkit.Unity.InputModule
             eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceKind);
             if (sourceKind != InteractionSourceInfo.Hand)
             {
-                if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+                if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.GripPosition))
                 {
-                    // The input source must provide positional data for this script to be usable
+                    // The input source must provide grip positional data for this script to be usable
                     return;
                 }
             }
 #else
-            if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+            if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.PointerPosition))
             {
                 // The input source must provide positional data for this script to be usable
                 return;
             }
-#endif
+#endif // UNITY_2017_2_OR_NEWER
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
 

@@ -4,12 +4,12 @@
 using UnityEngine;
 
 #if UNITY_WSA
+using System.Collections.Generic;
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
 #else
 using UnityEngine.VR.WSA.Input;
 #endif
-using System.Collections.Generic;
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -282,18 +282,13 @@ namespace HoloToolkit.Unity.InputModule
             InteractionManager.SourceReleased -= InteractionManager_InteractionSourceReleased;
             InteractionManager.SourceLost -= InteractionManager_InteractionSourceLost;
 #endif
+
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                GetOrAddSourceData(states[i].source);
-                InputManager.Instance.RaiseSourceLost(this, states[i].source.id);
-            }
-
-            foreach (InteractionSourceState iss in InteractionManager.GetCurrentReading())
-            {
                 // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
-                sourceIdToData.Remove(iss.source.id);
-                InputManager.Instance.RaiseSourceLost(this, iss.source.id);
+                sourceIdToData.Remove(states[i].source.id);
+                InputManager.Instance.RaiseSourceLost(this, states[i].source.id);
             }
 #endif
         }
@@ -379,6 +374,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 GestureRecognizer.StopCapturingGestures();
             }
+
             if (NavigationGestureRecognizer != null && NavigationGestureRecognizer.IsCapturingGestures())
             {
                 NavigationGestureRecognizer.StopCapturingGestures();
@@ -455,6 +451,21 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
+        public bool TryGetHandedness(uint sourceId, out Handedness handedness)
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                handedness = (Handedness)sourceData.Handedness;
+                return true;
+            }
+#endif
+
+            handedness = default(Handedness);
+            return false;
+        }
+
         #region BaseInputSource implementations
 
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
@@ -464,8 +475,10 @@ namespace HoloToolkit.Unity.InputModule
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
-                retVal |= GetSupportFlag(sourceData.PointerPosition, SupportedInputInfo.Position);
-                retVal |= GetSupportFlag(sourceData.PointerRotation, SupportedInputInfo.Rotation);
+                retVal |= GetSupportFlag(sourceData.PointerPosition, SupportedInputInfo.PointerPosition);
+                retVal |= GetSupportFlag(sourceData.PointerRotation, SupportedInputInfo.PointerRotation);
+                retVal |= GetSupportFlag(sourceData.GripPosition, SupportedInputInfo.GripPosition);
+                retVal |= GetSupportFlag(sourceData.GripRotation, SupportedInputInfo.GripRotation);
                 retVal |= GetSupportFlag(sourceData.PointingRay, SupportedInputInfo.Pointing);
                 retVal |= GetSupportFlag(sourceData.Thumbstick, SupportedInputInfo.Thumbstick);
                 retVal |= GetSupportFlag(sourceData.Touchpad, SupportedInputInfo.Touchpad);
@@ -669,7 +682,6 @@ namespace HoloToolkit.Unity.InputModule
         #endregion
 
 #if UNITY_WSA
-
         /// <summary>
         /// Gets the source data for the specified interaction source if it already exists, otherwise creates it.
         /// </summary>
@@ -730,6 +742,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 sourceData.PositionUpdated = !(sourceData.PointerPosition.CurrentReading.Equals(newPointerPosition) && sourceData.GripPosition.CurrentReading.Equals(newGripPosition));
             }
+
             sourceData.PointerPosition.CurrentReading = newPointerPosition;
             sourceData.GripPosition.CurrentReading = newGripPosition;
 
@@ -933,10 +946,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
         {
+            InputManager.Instance.RaiseSourceLost(this, args.state.source.id);
+
             // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
             sourceIdToData.Remove(args.state.source.id);
-
-            InputManager.Instance.RaiseSourceLost(this, args.state.source.id);
         }
 
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)

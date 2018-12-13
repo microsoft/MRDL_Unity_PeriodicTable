@@ -101,7 +101,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// A queue of surfaces that need their meshes created (or updated).
         /// </summary>
         private readonly Queue<SurfaceId> surfaceWorkQueue = new Queue<SurfaceId>();
-#endif
 
         /// <summary>
         /// To prevent too many meshes from being generated at the same time, we will
@@ -109,6 +108,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// if a mesh creation request is in flight.
         /// </summary>
         private SurfaceObject? outstandingMeshRequest = null;
+#endif
 
         /// <summary>
         /// When surfaces are replaced or removed, rather than destroying them, we'll keep
@@ -164,7 +164,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         }
 
         /// <summary>
-        /// The direction of the observed volume, if an oriented box is choosen.
+        /// The direction of the observed volume, if an oriented box is chosen.
         /// </summary>
         [SerializeField]
         [Tooltip("The direction of the observation volume.")]

@@ -1,18 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR_WIN
-using System;
 using System.Runtime.InteropServices;
 #endif
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-using GLTF;
 using System.Collections;
+using System.IO;
 using UnityEngine.XR.WSA.Input;
+using UnityGLTF;
 
 #if !UNITY_EDITOR
 using Windows.Foundation;
@@ -27,14 +28,14 @@ namespace HoloToolkit.Unity.InputModule
     /// and animates the controller position, rotation, button presses, and
     /// thumbstick/touchpad interactions, where applicable.
     /// </summary>
-    public class MotionControllerVisualizer : MonoBehaviour
+    public class MotionControllerVisualizer : Singleton<MotionControllerVisualizer>
     {
         [Tooltip("This setting will be used to determine if the model, override or otherwise, should attempt to be animated based on the user's input.")]
         public bool AnimateControllerModel = true;
 
-        [Tooltip("This setting will be used to determine if the model should always be the left alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
+        [Tooltip("This setting will be used to determine if the model should always be the left alternate. If false, the platform controller models will be preferred, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
         public bool AlwaysUseAlternateLeftModel = false;
-        [Tooltip("This setting will be used to determine if the model should always be the right alternate. If false, the platform controller models will be prefered, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
+        [Tooltip("This setting will be used to determine if the model should always be the right alternate. If false, the platform controller models will be preferred, only if they can't be loaded will the alternate be used. Otherwise, it will always use the alternate model.")]
         public bool AlwaysUseAlternateRightModel = false;
 
         [Tooltip("Use a model with the tip in the positive Z direction and the front face in the positive Y direction. To override the platform left controller model set AlwaysUseAlternateModel to true; otherwise this will be the default if the model can't be found.")]
@@ -51,24 +52,31 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         protected UnityEngine.Material GLTFMaterial;
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         // This will be used to keep track of our controllers, indexed by their unique source ID.
-        private Dictionary<uint, MotionControllerInfo> controllerDictionary = new Dictionary<uint, MotionControllerInfo>(0);
-        private List<uint> loadingControllers = new List<uint>();
+        private Dictionary<string, MotionControllerInfo> controllerDictionary = new Dictionary<string, MotionControllerInfo>(0);
+        private List<string> loadingControllers = new List<string>();
+
+        private MotionControllerInfo leftControllerModel;
+        private MotionControllerInfo rightControllerModel;
+
+        public event Action<MotionControllerInfo> OnControllerModelLoaded;
+        public event Action<MotionControllerInfo> OnControllerModelUnloaded;
+
+        private bool leftModelIsAlternate = false;
+        private bool rightModelIsAlternate = false;
+#endif
 
 #if UNITY_EDITOR_WIN
-        [DllImport("MotionControllerModel")]
+        [DllImport("EditorMotionController")]
         private static extern bool TryGetMotionControllerModel([In] uint controllerId, [Out] out uint outputSize, [Out] out IntPtr outputBuffer);
 #endif
 
-        private void Awake()
+        protected override void Awake()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
-            for (var i = 0; i < states.Length; i++)
-            {
-                StartTrackingController(states[i].source);
-            }
+            base.Awake();
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             Application.onBeforeRender += Application_onBeforeRender;
 
             if (GLTFMaterial == null)
@@ -95,12 +103,19 @@ namespace HoloToolkit.Unity.InputModule
             UpdateControllerState();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
             Application.onBeforeRender -= Application_onBeforeRender;
+
+            foreach (MotionControllerInfo controllerInfo in controllerDictionary.Values)
+            {
+                Destroy(controllerInfo.ControllerParent);
+            }
 #endif
         }
 
@@ -108,16 +123,29 @@ namespace HoloToolkit.Unity.InputModule
         {
             // NOTE: This work is being done here to present the most correct rendered location of the controller each frame.
             // Any app logic depending on the controller state should happen in Update() or using InteractionManager's events.
-            UpdateControllerState();
+            // We don't want to potentially start loading a new controller model in this call, since onBeforeRender shouldn't
+            // do much work for performance reasons.
+            UpdateControllerState(false);
         }
 
-        private void UpdateControllerState()
+        private void UpdateControllerState(bool createNewControllerIfNeeded = true)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             foreach (var sourceState in InteractionManager.GetCurrentReading())
             {
+                if (sourceState.source.kind != InteractionSourceKind.Controller)
+                {
+                    continue;
+                }
+
+                string key = GenerateKey(sourceState.source);
+                if (createNewControllerIfNeeded && !controllerDictionary.ContainsKey(key) && !loadingControllers.Contains(key))
+                {
+                    StartTrackingController(sourceState.source);
+                }
+
                 MotionControllerInfo currentController;
-                if (sourceState.source.kind == InteractionSourceKind.Controller && controllerDictionary.TryGetValue(sourceState.source.id, out currentController))
+                if (controllerDictionary.TryGetValue(key, out currentController))
                 {
                     if (AnimateControllerModel)
                     {
@@ -145,19 +173,31 @@ namespace HoloToolkit.Unity.InputModule
                     }
 
                     Vector3 newPosition;
-                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip))
+                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip) && ValidPosition(newPosition))
                     {
                         currentController.ControllerParent.transform.localPosition = newPosition;
                     }
 
                     Quaternion newRotation;
-                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip))
+                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip) && ValidRotation(newRotation))
                     {
                         currentController.ControllerParent.transform.localRotation = newRotation;
                     }
                 }
             }
 #endif
+        }
+
+        private bool ValidRotation(Quaternion newRotation)
+        {
+            return !float.IsNaN(newRotation.x) && !float.IsNaN(newRotation.y) && !float.IsNaN(newRotation.z) && !float.IsNaN(newRotation.w) &&
+                !float.IsInfinity(newRotation.x) && !float.IsInfinity(newRotation.y) && !float.IsInfinity(newRotation.z) && !float.IsInfinity(newRotation.w);
+        }
+
+        private bool ValidPosition(Vector3 newPosition)
+        {
+            return !float.IsNaN(newPosition.x) && !float.IsNaN(newPosition.y) && !float.IsNaN(newPosition.z) &&
+                !float.IsInfinity(newPosition.x) && !float.IsInfinity(newPosition.y) && !float.IsInfinity(newPosition.z);
         }
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
@@ -168,9 +208,33 @@ namespace HoloToolkit.Unity.InputModule
 
         private void StartTrackingController(InteractionSource source)
         {
-            if (source.kind == InteractionSourceKind.Controller && !controllerDictionary.ContainsKey(source.id) && !loadingControllers.Contains(source.id) && source.supportsPointing)
+            string key = GenerateKey(source);
+
+            MotionControllerInfo controllerInfo;
+            if (source.kind == InteractionSourceKind.Controller)
             {
-                StartCoroutine(LoadControllerModel(source));
+                if (!controllerDictionary.ContainsKey(key) && !loadingControllers.Contains(key))
+                {
+                    StartCoroutine(LoadControllerModel(source));
+                }
+                else if (controllerDictionary.TryGetValue(key, out controllerInfo))
+                {
+                    if (controllerInfo.Handedness == InteractionSourceHandedness.Left)
+                    {
+                        leftControllerModel = controllerInfo;
+                    }
+                    else if (controllerInfo.Handedness == InteractionSourceHandedness.Right)
+                    {
+                        rightControllerModel = controllerInfo;
+                    }
+
+                    controllerInfo.ControllerParent.SetActive(true);
+
+                    if (OnControllerModelLoaded != null)
+                    {
+                        OnControllerModelLoaded(controllerInfo);
+                    }
+                }
             }
         }
 
@@ -184,19 +248,44 @@ namespace HoloToolkit.Unity.InputModule
             InteractionSource source = obj.state.source;
             if (source.kind == InteractionSourceKind.Controller)
             {
-                MotionControllerInfo controller;
-                if (controllerDictionary != null && controllerDictionary.TryGetValue(source.id, out controller))
+                MotionControllerInfo controllerInfo;
+                string key = GenerateKey(source);
+                if (controllerDictionary != null && controllerDictionary.TryGetValue(key, out controllerInfo))
                 {
-                    controllerDictionary.Remove(source.id);
+                    if (OnControllerModelUnloaded != null)
+                    {
+                        OnControllerModelUnloaded(controllerInfo);
+                    }
 
-                    Destroy(controller.ControllerParent);
+                    if (controllerInfo.Handedness == InteractionSourceHandedness.Left)
+                    {
+                        leftControllerModel = null;
+
+                        if (!AlwaysUseAlternateLeftModel && leftModelIsAlternate)
+                        {
+                            controllerDictionary.Remove(key);
+                            Destroy(controllerInfo.ControllerParent);
+                        }
+                    }
+                    else if (controllerInfo.Handedness == InteractionSourceHandedness.Right)
+                    {
+                        rightControllerModel = null;
+
+                        if (!AlwaysUseAlternateRightModel && rightModelIsAlternate)
+                        {
+                            controllerDictionary.Remove(key);
+                            Destroy(controllerInfo.ControllerParent);
+                        }
+                    }
+
+                    controllerInfo.ControllerParent.SetActive(false);
                 }
             }
         }
 
         private IEnumerator LoadControllerModel(InteractionSource source)
         {
-            loadingControllers.Add(source.id);
+            loadingControllers.Add(GenerateKey(source));
 
             if (AlwaysUseAlternateLeftModel && source.handedness == InteractionSourceHandedness.Left)
             {
@@ -302,16 +391,31 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
 
-            controllerModelGameObject = new GameObject();
-            controllerModelGameObject.name = "glTFController";
-            GLTFComponentStreamingAssets gltfScript = controllerModelGameObject.AddComponent<GLTFComponentStreamingAssets>();
-            gltfScript.ColorMaterial = GLTFMaterial;
-            gltfScript.NoColorMaterial = GLTFMaterial;
-            gltfScript.GLTFData = fileBytes;
+            controllerModelGameObject = new GameObject { name = "glTFController" };
+            controllerModelGameObject.transform.Rotate(0, 180, 0);
 
-            yield return gltfScript.LoadModel();
+            var sceneImporter = new GLTFSceneImporter(
+                "",
+                new MemoryStream(fileBytes, 0, fileBytes.Length, false, true),
+                controllerModelGameObject.transform
+                );
 
-            FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
+            sceneImporter.SetShaderForMaterialType(GLTFSceneImporter.MaterialType.PbrMetallicRoughness, GLTFMaterial.shader);
+            sceneImporter.SetShaderForMaterialType(GLTFSceneImporter.MaterialType.KHR_materials_pbrSpecularGlossiness, GLTFMaterial.shader);
+            sceneImporter.SetShaderForMaterialType(GLTFSceneImporter.MaterialType.CommonConstant, GLTFMaterial.shader);
+
+            yield return sceneImporter.Load();
+
+            if (source.handedness == InteractionSourceHandedness.Left)
+            {
+                leftModelIsAlternate = false;
+            }
+            else if (source.handedness == InteractionSourceHandedness.Right)
+            {
+                rightModelIsAlternate = false;
+            }
+
+            FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
         }
 
         private void LoadAlternateControllerModel(InteractionSource source)
@@ -320,40 +424,78 @@ namespace HoloToolkit.Unity.InputModule
             if (source.handedness == InteractionSourceHandedness.Left && AlternateLeftController != null)
             {
                 controllerModelGameObject = Instantiate(AlternateLeftController);
+                leftModelIsAlternate = true;
             }
             else if (source.handedness == InteractionSourceHandedness.Right && AlternateRightController != null)
             {
                 controllerModelGameObject = Instantiate(AlternateRightController);
+                rightModelIsAlternate = true;
             }
             else
             {
-                loadingControllers.Remove(source.id);
+                loadingControllers.Remove(GenerateKey(source));
                 return;
             }
 
-            FinishControllerSetup(controllerModelGameObject, source.handedness.ToString(), source.id);
+            FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
         }
-#endif
 
-        private void FinishControllerSetup(GameObject controllerModelGameObject, string handedness, uint id)
+        private string GenerateKey(InteractionSource source)
+        {
+            return source.vendorId + "/" + source.productId + "/" + source.productVersion + "/" + source.handedness;
+        }
+
+        private void FinishControllerSetup(GameObject controllerModelGameObject, InteractionSourceHandedness handedness, string dictionaryKey)
         {
             var parentGameObject = new GameObject
             {
-                name = handedness + "Controller"
+                name = dictionaryKey + "Controller"
             };
 
             parentGameObject.transform.parent = transform;
             controllerModelGameObject.transform.parent = parentGameObject.transform;
 
-            var newControllerInfo = new MotionControllerInfo() { ControllerParent = parentGameObject };
-            if (AnimateControllerModel)
+            var newControllerInfo = new MotionControllerInfo(parentGameObject, handedness);
+
+            newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>());
+
+            if (handedness == InteractionSourceHandedness.Left)
             {
-                newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
+                leftControllerModel = newControllerInfo;
+            }
+            else if (handedness == InteractionSourceHandedness.Right)
+            {
+                rightControllerModel = newControllerInfo;
             }
 
-            loadingControllers.Remove(id);
-            controllerDictionary.Add(id, newControllerInfo);
+            if (OnControllerModelLoaded != null)
+            {
+                OnControllerModelLoaded(newControllerInfo);
+            }
+
+            loadingControllers.Remove(dictionaryKey);
+            controllerDictionary.Add(dictionaryKey, newControllerInfo);
         }
+
+        public bool TryGetControllerModel(InteractionSourceHandedness handedness, out MotionControllerInfo controller)
+        {
+            if (handedness == InteractionSourceHandedness.Left && leftControllerModel != null)
+            {
+                controller = leftControllerModel;
+                return true;
+            }
+            else if (handedness == InteractionSourceHandedness.Right && rightControllerModel != null)
+            {
+                controller = rightControllerModel;
+                return true;
+            }
+            else
+            {
+                controller = null;
+                return false;
+            }
+        }
+#endif
 
         public GameObject SpawnTouchpadVisualizer(Transform parentTransform)
         {

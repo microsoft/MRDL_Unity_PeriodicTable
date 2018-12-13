@@ -34,21 +34,24 @@ namespace HoloToolkit.UI.Keyboard
         {
             base.OnPointerClick(eventData);
 
-            Keyboard.Instance.Close();
-            Keyboard.Instance.PresentKeyboard(text, KeyboardLayout);
-
-            if (KeyboardSpawnPoint != null)
+            if (!TouchScreenKeyboard.isSupported)
             {
-                Keyboard.Instance.RepositionKeyboard(KeyboardSpawnPoint, null, KeyBoardPositionOffset);
-            }
-            else
-            {
-                Keyboard.Instance.RepositionKeyboard(transform, null, KeyBoardPositionOffset);
-            }
+                Keyboard.Instance.Close();
+                Keyboard.Instance.PresentKeyboard(text, KeyboardLayout);
 
-            // Subscribe to keyboard delegates
-            Keyboard.Instance.OnTextUpdated += Keyboard_OnTextUpdated;
-            Keyboard.Instance.OnClosed += Keyboard_OnClosed;
+                if (KeyboardSpawnPoint != null)
+                {
+                    Keyboard.Instance.RepositionKeyboard(KeyboardSpawnPoint, null, KeyBoardPositionOffset);
+                }
+                else
+                {
+                    Keyboard.Instance.RepositionKeyboard(transform, null, KeyBoardPositionOffset);
+                }
+
+                // Subscribe to keyboard delegates
+                Keyboard.Instance.OnTextUpdated += Keyboard_OnTextUpdated;
+                Keyboard.Instance.OnClosed += Keyboard_OnClosed;
+            }
         }
 
         /// <summary>
@@ -57,10 +60,7 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="newText"></param>
         private void Keyboard_OnTextUpdated(string newText)
         {
-            if (!string.IsNullOrEmpty(newText))
-            {
-                text = newText;
-            }
+            text = newText;
         }
 
         /// <summary>

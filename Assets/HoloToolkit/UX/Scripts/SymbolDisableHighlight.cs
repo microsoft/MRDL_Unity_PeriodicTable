@@ -12,13 +12,13 @@ namespace HoloToolkit.UI.Keyboard
         /// The text field to update.
         /// </summary>
         [SerializeField]
-        private Text m_TextField;
+        private Text m_TextField = null;
 
         /// <summary>
         /// The text field to update.
         /// </summary>
         [SerializeField]
-        private Image m_ImageField;
+        private Image m_ImageField = null;
 
         /// <summary>
         /// The color to switch to when the button is disabled.
@@ -29,12 +29,12 @@ namespace HoloToolkit.UI.Keyboard
         /// <summary>
         /// The color the text field starts as.
         /// </summary>
-        private Color m_StartingColor;
+        private Color m_StartingColor = Color.white;
 
         /// <summary>
         /// The button to check for disabled/enabled.
         /// </summary>
-        private Button m_Button;
+        private Button m_Button = null;
 
         /// <summary>
         /// Standard Unity start.
@@ -43,7 +43,7 @@ namespace HoloToolkit.UI.Keyboard
         {
             if (m_TextField != null)
             {
-	            m_StartingColor = m_TextField.color;
+                m_StartingColor = m_TextField.color;
             }
 
             if (m_ImageField != null)
@@ -71,7 +71,7 @@ namespace HoloToolkit.UI.Keyboard
         {
             if (m_TextField != null && m_Button != null)
             {
-	            m_TextField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
+                m_TextField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
             }
 
             if (m_ImageField != null && m_Button != null)
@@ -79,5 +79,5 @@ namespace HoloToolkit.UI.Keyboard
                 m_ImageField.color = m_Button.interactable ? m_StartingColor : m_DisabledColor;
             }
         }
-	}
+    }
 }

@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity.SpatialMapping;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEditor;
-using UnityEditor.SceneManagement;
-using HoloToolkit.Unity.InputModule;
 using Cursor = HoloToolkit.Unity.InputModule.Cursor;
 
 namespace HoloToolkit.Unity
@@ -23,16 +24,22 @@ namespace HoloToolkit.Unity
         private const string CameraPrefabGUID = "d29bc40b7f3df26479d6a0aac211c355";
 
         /// <summary>
-        /// Can be found in the meta file of the camera prefab.  We use the GUID in case people move the toolkit folders &amp; assets around in their own projects.
-        /// <remarks>Currently points to the InputManager.prefab</remarks>
+        /// Can be found in the meta file of the input system prefab.  We use the GUID in case people move the toolkit folders &amp; assets around in their own projects.
+        /// <remarks>Currently points to InputManager.prefab</remarks>
         /// </summary>
         private const string InputSystemPrefabGUID = "3eddd1c29199313478dd3f912bfab2ab";
 
         /// <summary>
-        /// Can be found in the meta file of the camera prefab.  We use the GUID in case people move the toolkit folders &amp; assets around in their own projects.
-        /// <remarks>Currently points to the DefaultCursor.prefab</remarks>
+        /// Can be found in the meta file of the default cursor prefab.  We use the GUID in case people move the toolkit folders &amp; assets around in their own projects.
+        /// <remarks>Currently points to DefaultCursor.prefab</remarks>
         /// </summary>
         private const string DefaultCursorPrefabGUID = "a611e772ef8ddf64d8106a9cbb70f31c";
+
+        /// <summary>
+        /// Can be found in the meta file of the spatial mapping prefab.  We use the GUID in case people move the toolkit folders &amp; assets around in their own projects.
+        /// <remarks>Currently points to SpatialMapping.prefab</remarks>
+        /// </summary>
+        private const string SpatialMappingPrefabGUID = "2ed75ffdf9031c94e8bce4b3d17b9928";
 
         #region Nested Types
 
@@ -42,6 +49,8 @@ namespace HoloToolkit.Unity
             CameraToOrigin,
             AddInputSystem,
             AddDefaultCursor,
+            UpdateCanvases,
+            AddSpatialMapping
         }
 
         #endregion // Nested Types
@@ -60,15 +69,16 @@ namespace HoloToolkit.Unity
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(CameraPrefabGUID)));
             }
 
-            var mainCamera = CameraCache.Refresh(Camera.main);
+            if (Values[SceneSetting.CameraToOrigin])
+            {
 
-            if (mainCamera == null)
-            {
-                Debug.LogWarning("Could not find a valid \"MainCamera\"!  Unable to update camera position.");
-            }
-            else
-            {
-                if (Values[SceneSetting.CameraToOrigin])
+                var mainCamera = CameraCache.Refresh(Camera.main);
+
+                if (mainCamera == null)
+                {
+                    Debug.LogWarning("Could not find a valid \"MainCamera\"!  Unable to update camera position.");
+                }
+                else
                 {
                     mainCamera.transform.position = Vector3.zero;
                 }
@@ -95,7 +105,23 @@ namespace HoloToolkit.Unity
                 }
 
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(InputSystemPrefabGUID)));
-                FocusManager.Instance.UpdateCanvasEventSystems();
+                Values[SceneSetting.UpdateCanvases] = true;
+            }
+
+            if (Values[SceneSetting.UpdateCanvases])
+            {
+                var focusManager = FindObjectOfType<FocusManager>();
+                if (focusManager != null)
+                {
+                    FocusManager.Instance.UpdateCanvasEventSystems();
+                }
+
+                var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
+                foreach (Canvas canvas in sceneCanvases)
+                {
+                    var helper = canvas.EnsureComponent<CanvasHelper>();
+                    helper.Canvas = canvas;
+                }
             }
 
             if (Values[SceneSetting.AddDefaultCursor])
@@ -111,6 +137,19 @@ namespace HoloToolkit.Unity
                 FindObjectOfType<InputManager>().GetComponent<SimpleSinglePointerSelector>().Cursor = FindObjectOfType<Cursor>();
             }
 
+            if (Values[SceneSetting.AddSpatialMapping])
+            {
+                var spatialMappingManagers = FindObjectsOfType<SpatialMappingManager>();
+                if (spatialMappingManagers.Length > 0)
+                {
+                    Debug.LogWarning("There's already a SpatialMappingManager in the scene. Did not add the SpatialMapping prefab.");
+                }
+                else
+                {
+                    PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(SpatialMappingPrefabGUID)));
+                }
+            }
+
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
 
             Close();
@@ -118,10 +157,12 @@ namespace HoloToolkit.Unity
 
         protected override void LoadSettings()
         {
-            for (int i = 0; i <= (int)SceneSetting.AddDefaultCursor; i++)
+            for (int i = 0; i <= (int)SceneSetting.UpdateCanvases; i++)
             {
                 Values[(SceneSetting)i] = true;
             }
+
+            Values[SceneSetting.AddSpatialMapping] = false;
         }
 
         protected override void OnGuiChanged()
@@ -154,9 +195,22 @@ namespace HoloToolkit.Unity
             Names[SceneSetting.AddDefaultCursor] = "Add the Default Cursor Prefab";
             Descriptions[SceneSetting.AddDefaultCursor] =
                 "Recommended\n\n" +
-                "Adds the  Default Cursor Prefab to the scene.\n\n" +
+                "Adds the Default Cursor Prefab to the scene.\n\n" +
                 "The prefab comes preset with all the components and options for automatically handling cursor animations for Mixed Reality Applications.\n\n" +
                 "<color=#ff0000ff><b>Warning!</b></color> This will remove and replace any currently existing Cursors in your scene.";
+
+            Names[SceneSetting.UpdateCanvases] = "Update World Space Canvases";
+            Descriptions[SceneSetting.UpdateCanvases] =
+                "Recommended\n\n" +
+                "Updates all the World Space Canvases in the scene to use the Focus Managers UIRaycastCamera as its default event camera.\n\n" +
+                "<color=#ffff00ff><b>Note:</b></color> This also adds a CanvasHelper script to the canvas to aid in the scene transitions and instances where the camera does not " +
+                "initially exist in the same scene as the canvas.";
+
+            Names[SceneSetting.AddSpatialMapping] = "Add the Spatial Mapping Prefab";
+            Descriptions[SceneSetting.AddSpatialMapping] =
+                "Adds the Spatial Mapping Prefab to the scene.\n\n" +
+                "The prefab comes preset with the components and options for bringing spatial mapping into your HoloLens application.\n\n" +
+                "<color=#ff0000ff><b>Warning!</b></color> This will remove and replace any currently existing Spatial Mapping Managers in your scene.";
         }
 
         protected override void OnEnable()
