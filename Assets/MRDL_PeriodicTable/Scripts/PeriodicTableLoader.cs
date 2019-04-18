@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using HoloToolkit.Unity.Collections;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,7 +55,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
         // How much space to put between each element prefab
         public float ElementSeperationDistance;
 
-        public ObjectCollection Collection;
+        public GridObjectCollection Collection;
 
         public Material MatAlkaliMetal;
         public Material MatAlkalineEarthMetal;
@@ -101,9 +101,6 @@ namespace HoloToolkit.MRDL.PeriodicTable
                 newElement.transform.localPosition = new Vector3(element.xpos * ElementSeperationDistance - ElementSeperationDistance * 18 / 2, ElementSeperationDistance * 9 - element.ypos * ElementSeperationDistance, Collection.Radius);
                 newElement.transform.localRotation = Quaternion.identity;
             }
-
-            // Store this configuration in the dynamic collection so we can retrieve it later
-            Collection.GetComponent<ObjectCollectionDynamic>().StoreArrangement();
         }
     }
 }
