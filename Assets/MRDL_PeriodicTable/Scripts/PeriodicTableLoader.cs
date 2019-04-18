@@ -70,8 +70,8 @@ namespace HoloToolkit.MRDL.PeriodicTable
 
         void OnEnable()
         {
-            if (Collection.transform.childCount > 0)
-                return;
+            //if (Collection.transform.childCount > 0)
+            //    return;
 
             Debug.Log("Creating arrangement");
 
@@ -98,7 +98,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
             {
                 GameObject newElement = Instantiate<GameObject>(ElementPrefab, Parent);
                 newElement.GetComponentInChildren<Element>().SetFromElementData(element, typeMaterials);
-                newElement.transform.localPosition = new Vector3(element.xpos * ElementSeperationDistance - ElementSeperationDistance * 18 / 2, ElementSeperationDistance * 9 - element.ypos * ElementSeperationDistance, Collection.Radius);
+                newElement.transform.localPosition = new Vector3(element.xpos * ElementSeperationDistance - ElementSeperationDistance * 18 / 2, ElementSeperationDistance * 9 - element.ypos * ElementSeperationDistance, 2.0f);
                 newElement.transform.localRotation = Quaternion.identity;
             }
         }

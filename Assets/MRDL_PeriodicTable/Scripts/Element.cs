@@ -40,6 +40,17 @@ namespace HoloToolkit.MRDL.PeriodicTable
         private Material clearMaterial;
         private PresentToPlayer present;
 
+        public void SetActiveElement()
+        {
+            Element element = gameObject.GetComponent<Element>();
+            ActiveElement = element;
+        }
+
+        public void ResetActiveElement()
+        {
+            ActiveElement = null;
+        }
+
         public void Start()
         {
             // Turn off our animator until it's needed
