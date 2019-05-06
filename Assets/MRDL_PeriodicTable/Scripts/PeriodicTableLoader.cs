@@ -68,12 +68,22 @@ namespace HoloToolkit.MRDL.PeriodicTable
         public Material MatActinide;
         public Material MatLanthanide;
 
-        void OnEnable()
+        private bool isFirstRun = true;
+
+        private void Start()
+        {
+            InitializeData();
+        }
+
+
+        public void InitializeData()
         {
             //if (Collection.transform.childCount > 0)
             //    return;
 
-            Debug.Log("Creating arrangement");
+            // Parse the elements out of the json file
+            TextAsset asset = Resources.Load<TextAsset>("JSON/PeriodicTableJSON");
+            List<ElementData> elements = ElementsData.FromJSON(asset.text).elements;
 
             Dictionary<string, Material> typeMaterials = new Dictionary<string, Material>()
         {
@@ -89,18 +99,35 @@ namespace HoloToolkit.MRDL.PeriodicTable
             { "lanthanide", MatLanthanide },
         };
 
-            // Parse the elements out of the json file
-            TextAsset asset = Resources.Load<TextAsset>("JSON/PeriodicTableJSON");
-            List<ElementData> elements = ElementsData.FromJSON(asset.text).elements;
 
-            // Insantiate the element prefabs in their correct locations and with correct text
-            foreach (ElementData element in elements)
+            if (isFirstRun == true)
             {
-                GameObject newElement = Instantiate<GameObject>(ElementPrefab, Parent);
-                newElement.GetComponentInChildren<Element>().SetFromElementData(element, typeMaterials);
-                newElement.transform.localPosition = new Vector3(element.xpos * ElementSeperationDistance - ElementSeperationDistance * 18 / 2, ElementSeperationDistance * 9 - element.ypos * ElementSeperationDistance, 2.0f);
-                newElement.transform.localRotation = Quaternion.identity;
+                // Insantiate the element prefabs in their correct locations and with correct text
+                foreach (ElementData element in elements)
+                {
+                    GameObject newElement = Instantiate<GameObject>(ElementPrefab, Parent);
+                    newElement.GetComponentInChildren<Element>().SetFromElementData(element, typeMaterials);
+                    newElement.transform.localPosition = new Vector3(element.xpos * ElementSeperationDistance - ElementSeperationDistance * 18 / 2, ElementSeperationDistance * 9 - element.ypos * ElementSeperationDistance, 2.0f);
+                    newElement.transform.localRotation = Quaternion.identity;
+                }
+
+                isFirstRun = false;
             }
+            else
+            {
+                int i = 0;
+                // Update position and data of existing element objects
+                foreach(Transform existingElementObject in Parent)
+                {
+                    existingElementObject.parent.GetComponentInChildren<Element>().SetFromElementData(elements[i], typeMaterials);
+                    existingElementObject.localPosition = new Vector3(elements[i].xpos * ElementSeperationDistance - ElementSeperationDistance * 18 / 2, ElementSeperationDistance * 9 - elements[i].ypos * ElementSeperationDistance, 2.0f);
+                    existingElementObject.localRotation = Quaternion.identity;
+                    i++;
+                }
+                Parent.localPosition = new Vector3(0.0f, -1.0f, 1.0f);
+
+            }
+
         }
     }
 }
