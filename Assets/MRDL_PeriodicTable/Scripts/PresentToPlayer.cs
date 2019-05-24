@@ -38,10 +38,6 @@ namespace HoloToolkit.MRDL.PeriodicTable
         bool returning = false;
         bool inPosition = false;
 
-        public void Awake()
-        {
-            PresentationDistance = HolographicSettings.IsDisplayOpaque ? 0.5f : 1f;
-        }
         public void Present()
         {
             if (presenting)
