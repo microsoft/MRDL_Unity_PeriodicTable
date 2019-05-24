@@ -75,7 +75,7 @@ public class LayoutStyleChanger : MonoBehaviour
             objectCollection.CellHeight = 0.3f;
             objectCollection.UpdateCollection();
 
-            tableParentTransform.localPosition = new Vector3(0.0f, 0.0f, 2.0f);
+            tableParentTransform.localPosition = new Vector3(0.0f, 0.0f, 0.8f);
 
         }
     }

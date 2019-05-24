@@ -736,8 +736,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.9773156, y: 0.8611548, z: 0.9312399}
+  m_Center: {x: -0.0021119416, y: -0.022176057, z: 0.0002495696}
 --- !u!114 &7278242752777982689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2489,10 +2489,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb2e7840af109fd43a1df77df0f385c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PresentationDistance: 1.55
+  PresentationDistance: 1
   TravelTime: 0.7
-  OrientToCamera: 0
-  OrientYAxisOnly: 0
+  OrientToCamera: 1
+  OrientYAxisOnly: 1
   TargetTranfsorm: {fileID: 4962303452576222}
 --- !u!114 &6075953362897447473
 MonoBehaviour:
@@ -2522,7 +2522,7 @@ MonoBehaviour:
   Profiles:
   - Target: {fileID: 1361587674879038}
     Themes:
-    - {fileID: 11400000, guid: fb41e3b18830fee459de507fe94ef130, type: 2}
+    - {fileID: 0}
     HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
@@ -3076,11 +3076,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4606107804096986}
     m_Modifications:
-    - target: {fileID: 3680309189571203126, guid: 982dae09371d2c344bfa838b073937e3,
-        type: 3}
-      propertyPath: m_Name
-      value: InfoBackGradient
-      objectReference: {fileID: 0}
     - target: {fileID: 3676096710232246856, guid: 982dae09371d2c344bfa838b073937e3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3135,6 +3130,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680309189571203126, guid: 982dae09371d2c344bfa838b073937e3,
+        type: 3}
+      propertyPath: m_Name
+      value: InfoBackGradient
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 982dae09371d2c344bfa838b073937e3, type: 3}
