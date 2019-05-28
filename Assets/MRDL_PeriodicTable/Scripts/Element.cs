@@ -4,6 +4,7 @@
 //
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
         public TextMesh ElementName;
         public TextMesh ElementNameDetail;
 
-        public Text ElementDescription;
+        public TextMeshProUGUI ElementDescription;
         public Text DataAtomicNumber;
         public Text DataAtomicWeight;
         public Text DataMeltingPoint;
