@@ -2,22 +2,15 @@
 This repo is where Microsoft's Windows Mixed Reality Design team publishes sample apps and experiments. Find out details on https://developer.microsoft.com/en-us/windows/mixed-reality/periodic_table_of_the_elements
 
 # Periodic Table of the Elements
-Periodic Table of the Elements is an open-source sample app from Microsoft's Mixed Reality Design Labs. It demonstrates how to use **[Mixed Reality Toolkit(MRTK)](https://github.com/Microsoft/MixedRealityToolkit-Unity)**'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. In this project, you can find the examples of:
-- Use MRTK's **[MixedRealityCamera](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit/Input/Prefabs/MixedRealityCamera.prefab)** and **[InputManager](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit/Input/Prefabs/InputManager.prefab)** for HoloLens gesture input and Immersive headset's motion controller input
-- Layout an array of objects in 3D space with various surface types using **MRTK's [Object Collection](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md)**. 
-- Create objects that respond to the standard inputs using **MRTK's [Interactable Object](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md)**. 
-- Loading and parsing local JSON file data using Unity's JsonUtility
-
-You can use this project's components to create your own mixed reality app experiences. 
+Periodic Table of the Elements is an open-source sample app from Microsoft's Mixed Reality Design Labs. It demonstrates how to use **[Mixed Reality Toolkit(MRTK)](https://github.com/Microsoft/MixedRealityToolkit-Unity)**'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. 
 
 <img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Hero.jpg" alt="Periodic Table of the Elements">
 
-
-
-# Supported Unity version: 2017.2.0P1-MRTP4
-The current supported version of Unity is [**Unity 2017.2.0p1-MRTP4**](http://beta.unity3d.com/download/b1565bfe4a0c/UnityDownloadAssistant.exe). 
+# Supported Unity version: 2018.3.13f1
+# MRTK version: [v2.0.0-RC1-Refresh](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.0.0-RC1-Refresh)
 
 # Supported device
+- [HoloLens 2](https://www.hololens.com)
 - [HoloLens](https://www.hololens.com)
 - [Immersive headset with motion controllers](https://www.microsoft.com/en-us/windows/windows-mixed-reality)
 
