@@ -1,6 +1,6 @@
 # Mixed Reality Design Labs - Periodic Table of the Elements
 This repo is where Microsoft's Windows Mixed Reality Design team publishes sample apps and experiments. 
-Periodic Table of the Elements is an open-source sample app from Microsoft's Mixed Reality Design Labs. It demonstrates how to use **[Mixed Reality Toolkit(MRTK)](https://github.com/Microsoft/MixedRealityToolkit-Unity)**'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. 
+Periodic Table of the Elements is an open-source sample app which demonstrates how to use **[Mixed Reality Toolkit(MRTK)](https://github.com/Microsoft/MixedRealityToolkit-Unity)**'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. 
 
 <img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Hero.jpg" alt="Periodic Table of the Elements">
 
