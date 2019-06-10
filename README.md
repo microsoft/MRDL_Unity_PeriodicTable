@@ -1,23 +1,21 @@
-# Mixed Reality Design Labs
+# Mixed Reality Design Labs - Periodic Table of the Elements
 This repo is where Microsoft's Windows Mixed Reality Design team publishes sample apps and experiments. 
+Periodic Table of the Elements is an open-source sample app from Microsoft's Mixed Reality Design Labs. It demonstrates how to use **[Mixed Reality Toolkit(MRTK)](https://github.com/Microsoft/MixedRealityToolkit-Unity)**'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. 
+
+<img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Hero.jpg" alt="Periodic Table of the Elements">
 
 # Design & Development Stories
 - [Bringing the Periodic Table of the Elements app to HoloLens 2 with MRTK v2](https://medium.com/@dongyoonpark/bringing-the-periodic-table-of-the-elements-app-to-hololens-2-with-mrtk-v2-a6e3d8362158?postPublishedType=repub)
 - [Designing Periodic Table of the Elements for HoloLens](https://developer.microsoft.com/en-us/windows/mixed-reality/periodic_table_of_the_elements)
 
-# Periodic Table of the Elements
-Periodic Table of the Elements is an open-source sample app from Microsoft's Mixed Reality Design Labs. It demonstrates how to use **[Mixed Reality Toolkit(MRTK)](https://github.com/Microsoft/MixedRealityToolkit-Unity)**'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. 
-
-<img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Hero.jpg" alt="Periodic Table of the Elements">
-
-# Supported Unity version: 2018.3.13f1
-# MRTK version: [v2.0.0-RC1-Refresh](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.0.0-RC1-Refresh)
+# Supported Unity and MRTK version
+- Unity 2018.3.13f1
+- MRTK: [v2.0.0-RC1-Refresh](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.0.0-RC1-Refresh)
 
 # Supported device
 - [HoloLens 2](https://www.hololens.com)
 - [HoloLens](https://www.hololens.com)
 - [Immersive headset with motion controllers](https://www.microsoft.com/en-us/windows/windows-mixed-reality)
-
 
 # Technical Details
 
