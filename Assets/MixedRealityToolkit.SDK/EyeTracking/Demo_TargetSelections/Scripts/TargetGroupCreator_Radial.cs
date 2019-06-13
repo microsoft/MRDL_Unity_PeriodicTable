@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// Handles the creation of a group of targets based on a list of given templates.
     /// </summary>
-    public class TargetGroupCreator_Radial : MonoBehaviour
+    public class TargetGroupCreatorRadial : MonoBehaviour
     {
         #region Variables
         [Tooltip("Target templates from which the group of targets will be created.")]

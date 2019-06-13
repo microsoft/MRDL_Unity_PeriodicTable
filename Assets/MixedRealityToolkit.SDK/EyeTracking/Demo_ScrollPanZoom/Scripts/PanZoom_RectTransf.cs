@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// This script allows to scroll a texture both horizontally and vertically.
     /// </summary>
-    public class PanZoom_RectTransf : PanZoomBase_RectTransf
+    public class PanZoomRectTransf : PanZoomBaseRectTransf
     {
         [Tooltip("RectTransform from, for example, your TextMeshPro game object.")]
         [SerializeField]

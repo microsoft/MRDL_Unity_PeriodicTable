@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
-    public class UserInput_Recorder : CustomInputLogger
+    public class UserInputRecorder : CustomInputLogger
     {
         public string FilenameToUse = "\\test\folder\\";
 
@@ -17,14 +17,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         private bool automaticLogging = true;
 
         #region Singleton
-        private static UserInput_Recorder instance;
-        public static UserInput_Recorder Instance
+        private static UserInputRecorder instance;
+        public static UserInputRecorder Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = FindObjectOfType<UserInput_Recorder>();
+                    instance = FindObjectOfType<UserInputRecorder>();
                 }
                 return instance;
             }
@@ -142,9 +142,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public override void OnDestroy()
         {
             // Disable listening to user input
-            if (UserInput_Recorder.Instance != null)
+            if (UserInputRecorder.Instance != null)
             {
-                UserInput_Recorder.Instance.StopLoggingAndSave();
+                UserInputRecorder.Instance.StopLoggingAndSave();
             }
 
             base.OnDestroy();

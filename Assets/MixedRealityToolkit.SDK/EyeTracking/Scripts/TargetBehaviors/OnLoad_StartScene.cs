@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// When the button is selected, it triggers starting the specified scene.
     /// </summary>
-    public class OnLoad_StartScene : MonoBehaviour
+    public class OnLoadStartScene : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("Name of the scene to be loaded when the button is selected.")]

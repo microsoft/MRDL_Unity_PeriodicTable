@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// The currently looked at part will move towards the front facing the user.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
-    public class OnLookAt_RotateByEyeGaze : BaseEyeFocusHandler
+    public class OnLookAtRotateByEyeGaze : BaseEyeFocusHandler
     {
         #region Serialized variables
         [Tooltip("Horizontal rotation speed.")]
@@ -52,6 +52,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private float maxRotY = 180.0f;
         #endregion
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         protected override void OnEyeFocusStay()
         {
             // Update target rotation
@@ -60,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void RotateHitTarget()
         {
-            Vector3 TargetToHit = (this.gameObject.transform.position - MixedRealityToolkit.InputSystem.EyeGazeProvider.HitPosition).normalized;
+            Vector3 TargetToHit = (this.gameObject.transform.position - InputSystem.EyeGazeProvider.HitPosition).normalized;
             Vector3 TargetToCam = (this.gameObject.transform.position - CameraCache.Main.transform.position).normalized;
 
             float angle1x, angle1y, angle1z, angle2x, angle2y;

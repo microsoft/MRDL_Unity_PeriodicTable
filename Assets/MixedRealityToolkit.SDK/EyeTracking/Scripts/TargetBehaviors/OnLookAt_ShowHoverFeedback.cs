@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
     /// a visual anchor at the target's center. Different fade in and fade out options are also available.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
-    public class OnLookAt_ShowHoverFeedback : BaseEyeFocusHandler
+    public class OnLookAtShowHoverFeedback : BaseEyeFocusHandler
     {
         // Overlay Feedback: Acts as a visual anchor at the target's center to fixate on.
         [Tooltip("If TRUE: Show a visual indicator at the target center when hovered.")]

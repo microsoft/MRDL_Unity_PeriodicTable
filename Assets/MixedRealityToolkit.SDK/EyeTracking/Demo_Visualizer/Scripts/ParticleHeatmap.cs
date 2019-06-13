@@ -24,14 +24,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private int particleDecalDataIndex;
         private ParticleSystem particleSys;
         private ParticleSystem.EmissionModule emissionModule;
-        private List<ParticleHeatmap_ParticleData> particleData;
+        private List<ParticleHeatmapParticleData> particleData;
 
         private void Start()
         {
             // Initialize particle data handlers
             particleSys = GetComponent<ParticleSystem>();
             emissionModule = particleSys.emission;
-            particleData = new List<ParticleHeatmap_ParticleData>();
+            particleData = new List<ParticleHeatmapParticleData>();
         }
 
         public void SetParticle(Vector3 pos)
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 particleDecalDataIndex = 0;
             }
 
-            ParticleHeatmap_ParticleData newParticle = new ParticleHeatmap_ParticleData();
+            ParticleHeatmapParticleData newParticle = new ParticleHeatmapParticleData();
             newParticle.position = pos;
             newParticle.radiusInMeter = Random.Range(minParticleSize, maxParticleSize);
 
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             float tmpIntensity = 0;
 
-            foreach (ParticleHeatmap_ParticleData point in particleData)
+            foreach (ParticleHeatmapParticleData point in particleData)
             {
                 if (pos != point.position)
                 {
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void UpdateColorForAllParticles()
         {
-            foreach (ParticleHeatmap_ParticleData particle in particleData)
+            foreach (ParticleHeatmapParticleData particle in particleData)
             {
                 particle.color = colorGradient.Evaluate(DetermineNormalizedIntensity(particle.position, particle.radiusInMeter));
             }

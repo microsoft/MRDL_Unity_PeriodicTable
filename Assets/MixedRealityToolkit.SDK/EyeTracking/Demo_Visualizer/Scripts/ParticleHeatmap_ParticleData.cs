@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
-    public class ParticleHeatmap_ParticleData
+    public class ParticleHeatmapParticleData
     {
         public Vector3 position;
         public float radiusInMeter;

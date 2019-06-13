@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// Iterates through a given set of targets based on a required TargetGroupCreator.
     /// </summary>
-    [RequireComponent(typeof(TargetGroupCreator_Radial))]
+    [RequireComponent(typeof(TargetGroupCreatorRadial))]
     public class TargetGroupIterator : MonoBehaviour, IMixedRealityPointerHandler
     {
         #region Variables
@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             currTargetIndex = 0;
             ResetAmountOfTries();
-            targets = GetComponent<TargetGroupCreator_Radial>().InstantiatedObjects;
+            targets = GetComponent<TargetGroupCreatorRadial>().InstantiatedObjects;
 
             // Randomize the order in which targets are highlighted
             if (Randomize)

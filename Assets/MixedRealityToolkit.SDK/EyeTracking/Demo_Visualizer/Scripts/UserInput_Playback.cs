@@ -15,7 +15,7 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
-    public class UserInput_Playback : MonoBehaviour
+    public class UserInputPlayback : MonoBehaviour
     {
         [SerializeField]
         private string customFilename = "";

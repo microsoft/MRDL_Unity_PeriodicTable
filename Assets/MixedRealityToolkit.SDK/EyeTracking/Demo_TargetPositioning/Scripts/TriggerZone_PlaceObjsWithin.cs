@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
-    public class TriggerZone_PlaceObjsWithin : MonoBehaviour
+    public class TriggerZonePlaceObjsWithin : MonoBehaviour
     {
         [Tooltip("Array of referenced game objects that are supposed to be placed within the collider of this target.).")]
         [SerializeField]

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
-    public class UserInput_Recorder_Feedback : MonoBehaviour
+    public class UserInputRecorderFeedback : MonoBehaviour
     {
         [SerializeField]
         private TextMesh statusText = null;

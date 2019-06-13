@@ -8,9 +8,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     [RequireComponent(typeof(EyeTrackingTarget))]
-    public class Target_MoveToCamera : BaseEyeFocusHandler
+    public class TargetMoveToCamera : BaseEyeFocusHandler
     {
-        public static Target_MoveToCamera currentlyFocusedTarget;
+        public static TargetMoveToCamera currentlyFocusedTarget;
 
         public MonoBehaviour[] ActivateBehaviorsWhenInFront;
 

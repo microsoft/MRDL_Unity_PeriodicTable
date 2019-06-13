@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// When the button is selected, it triggers starting the specified scene.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
-    public class OnSelect_VisualizerInputController : BaseEyeFocusHandler, IMixedRealityPointerHandler
+    public class OnSelectVisualizerInputController : BaseEyeFocusHandler, IMixedRealityPointerHandler
     {
         [SerializeField]
         public UnityEvent EventToTrigger;
@@ -35,8 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData) { }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
-
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData) { }
+
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
     }
 }

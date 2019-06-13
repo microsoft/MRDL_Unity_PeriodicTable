@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// This script allows to scroll a texture both horizontally and vertically.
     /// </summary>
-    public class PanZoom_Texture : PanZoomBase_Texture
+    public class PanZoomTexture : PanZoomBaseTexture
     {
         [Tooltip("Referenced renderer of the texture to be navigated.")]
         [SerializeField]

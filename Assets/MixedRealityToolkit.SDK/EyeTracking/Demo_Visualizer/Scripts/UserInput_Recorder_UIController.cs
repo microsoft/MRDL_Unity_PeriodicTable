@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
-    public class UserInput_Recorder_UIController : MonoBehaviour
+    public class UserInputRecorderUIController : MonoBehaviour
     {
         [SerializeField]
         private GameObject btn_StartRecording = null;
