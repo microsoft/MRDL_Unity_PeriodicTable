@@ -72,7 +72,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
                 cameraForward.Normalize();
             }
             Quaternion targetRotation = Quaternion.LookRotation(cameraForward, Vector3.up);
-            Vector3 targetPosition = cameraPosition + (cameraForward * PresentationDistance);// TODO use a HUX tool or something to get the main camera
+            Vector3 targetPosition = cameraPosition + (cameraForward * PresentationDistance) + new Vector3(0.0f, -0.1f, 0.0f);
             inPosition = false;
 
             float normalizedProgress = 0f;
