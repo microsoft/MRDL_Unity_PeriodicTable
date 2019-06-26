@@ -14,7 +14,7 @@ Periodic Table of the Elements is an open-source sample app from Microsoft's Mix
 
 You can use this project's components to create your own mixed reality app experiences. 
 
-# Porting story
+# Porting story (HoloLens 2 with MRTK v2)
 [Bringing the Periodic Table of the Elements app to HoloLens 2 with MRTK v2](https://medium.com/@dongyoonpark/bringing-the-periodic-table-of-the-elements-app-to-hololens-2-with-mrtk-v2-a6e3d8362158)
 
 # Design story (HoloLens 1st gen version)
