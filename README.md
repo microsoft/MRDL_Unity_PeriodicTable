@@ -1,11 +1,14 @@
 # Mixed Reality Design Labs
 This repo is where Microsoft's Windows Mixed Reality Design team publishes sample apps and experiments. Find out details on https://developer.microsoft.com/en-us/windows/mixed-reality/periodic_table_of_the_elements
 
+
 # Periodic Table of the Elements
 Periodic Table of the Elements is an open-source sample app from Microsoft's Mixed Reality Design Labs. It demonstrates how to use **[Mixed Reality Toolkit(MRTK)](https://github.com/Microsoft/MixedRealityToolkit-Unity)**'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. In this project, you can find the examples of:
-- Use MRTK's **[MixedRealityCamera](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit/Input/Prefabs/MixedRealityCamera.prefab)** and **[InputManager](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit/Input/Prefabs/InputManager.prefab)** for HoloLens gesture input and Immersive headset's motion controller input
-- Layout an array of objects in 3D space with various surface types using **MRTK's [Object Collection](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md)**. 
-- Create objects that respond to the standard inputs using **MRTK's [Interactable Object](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md)**. 
+- Use MRTK's **[Input System](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html)
+- Layout an array of objects in 3D space with various surface types using **MRTK's [Object Collection](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html)**. 
+- Create objects that respond to the standard inputs using **MRTK's [Interactable](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html)**. 
+- **MRTK [Button](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html)**
+- **MRTK [Manipulation Handler](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html)**
 - Loading and parsing local JSON file data using Unity's JsonUtility
 
 You can use this project's components to create your own mixed reality app experiences. 
@@ -14,10 +17,11 @@ You can use this project's components to create your own mixed reality app exper
 
 
 
-# Supported Unity version: 2017.2.0P1-MRTP4
-The current supported version of Unity is [**Unity 2017.2.0p1-MRTP4**](http://beta.unity3d.com/download/b1565bfe4a0c/UnityDownloadAssistant.exe). 
+# Supported Unity version
+The current supported version of Unity is [**Unity 2018.4.x**](https://unity3d.com/unity/qa/lts-releases?version=2018.4). 
 
 # Supported device
+- [HoloLens 2](https://www.hololens.com)
 - [HoloLens](https://www.hololens.com)
 - [Immersive headset with motion controllers](https://www.microsoft.com/en-us/windows/windows-mixed-reality)
 
@@ -41,6 +45,8 @@ The **ObjectCollectionMode** script inherits from one of HUX's most powerful too
 <img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Technical3.jpg" alt="Periodic Table of the Elements" width="450px">
 
 If you're rapidly prototyping, using the button's name to differentiate input is a quick way to get things done. You could also create a custom component that information relevant to a button's function. 
+
+
 # More from Mixed Reality Design Labs #
 ## Sample app - Lunar Module ##
 <img src="https://github.com/Microsoft/MRDesignLabs_Unity_LunarModule/blob/master/External/ReadMeImages/LM_hero.jpg" alt="Lunar Module sample app">
