@@ -5,7 +5,7 @@ This repo is where Microsoft's Windows Mixed Reality Design team publishes sampl
 
 # Periodic Table of the Elements
 Periodic Table of the Elements is an open-source sample app from Microsoft's Mixed Reality Design Labs. It demonstrates how to use **[Mixed Reality Toolkit(MRTK)](https://github.com/Microsoft/MixedRealityToolkit-Unity)**'s input system and building blocks to create an app experience for HoloLens and Immersive headsets. In this project, you can find the examples of:
-- Use MRTK's **[Input System](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html)
+- Use MRTK's **[Input System](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html)**
 - Layout an array of objects in 3D space with various surface types using **MRTK's [Object Collection](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html)**. 
 - Create objects that respond to the standard inputs using **MRTK's [Interactable](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html)**. 
 - **MRTK [Button](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html)**
