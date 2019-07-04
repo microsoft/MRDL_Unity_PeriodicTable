@@ -18,8 +18,10 @@ public class Atom : MonoBehaviour
     [Range(0.001f, 1f)]
     public float NucleusChangeSpeedOdds = 0.25f;
 
+    public Transform ScaleTransform;
+
     public bool Collapse = false;
-    
+
     public int NumProtons;
     public int NumNeutrons;
     public int NumElectrons;
@@ -39,39 +41,25 @@ public class Atom : MonoBehaviour
     Transform transformHelper;
     MaterialPropertyBlock propertyBlock;
     Vector3 atomScale;
+    Vector3 finalScale;
 
     private void OnEnable()
     {
-        propertyBlock = new MaterialPropertyBlock();
-        ProtonMat.enableInstancing = true;
-        NeutronMat.enableInstancing = true;
-        transform.localScale = Vector3.one * 0.01f;
-
-        randomRotations = new Quaternion[10];
-        for (int i = 0; i < randomRotations.Length; i++)
-        {
-            randomRotations[i] = Quaternion.Euler(Random.value * 360, Random.value * 360, Random.value * 360);
-        }
-
-        if (nucleusTargetPositions == null || nucleusTargetPositions.Length < NumProtons + NumNeutrons)
-        {
-            nucleusTargetPositions = new Vector3[NumProtons + NumNeutrons];
-            nucleusCurrentPositions = new Vector3[NumProtons + NumNeutrons];
-            protonMatrixes = new Matrix4x4[NumProtons];
-            neutronMatrixes = new Matrix4x4[NumNeutrons];
-        }
-
-        for (int i = 0; i < nucleusTargetPositions.Length; i++)
-        {
-            nucleusTargetPositions[i] = Random.onUnitSphere;
-            nucleusCurrentPositions[i] = nucleusTargetPositions[i] * 5f;
-        }
+        RefreshProperties();
 
         atomScale = Vector3.one * 0.001f;
+        transform.localScale = Vector3.one * 0.01f;
+
+        if (ScaleTransform == null)
+        {
+            ScaleTransform = transform.parent;
+        }
     }
 
     private void Update()
     {
+        RefreshProperties();
+
         Vector3 pos = transform.position;
 
         for (int i = 0; i < nucleusTargetPositions.Length; i++)
@@ -95,20 +83,56 @@ public class Atom : MonoBehaviour
             atomScale = Vector3.Lerp(atomScale, Vector3.one, Time.deltaTime);
         }
 
+        finalScale = Vector3.Scale(atomScale, ScaleTransform.lossyScale);
+
         for (int i = 0; i < NumProtons + NumNeutrons; i++)
         {
             nucleusCurrentPositions[i] = Vector3.Lerp(nucleusCurrentPositions[i], nucleusTargetPositions[i], Time.deltaTime * NucleusFlowSpeed);
-            
+
             if (i < NumProtons)
             {
-                protonMatrixes[i] = Matrix4x4.TRS(pos + ((nucleusCurrentPositions[i] + (Random.insideUnitSphere * NucleusJitter)) * Radius), randomRotations [i % randomRotations.Length], atomScale);
-            } else
+                protonMatrixes[i] = Matrix4x4.TRS(pos + ((nucleusCurrentPositions[i] + (Random.insideUnitSphere * NucleusJitter)) * Radius * finalScale.x), randomRotations[i % randomRotations.Length], finalScale);
+            }
+            else
             {
-                neutronMatrixes[i - NumProtons] = Matrix4x4.TRS(pos + ((nucleusCurrentPositions[i] + (Random.insideUnitSphere * NucleusJitter)) * Radius), randomRotations[i % randomRotations.Length], atomScale);
+                neutronMatrixes[i - NumProtons] = Matrix4x4.TRS(pos + ((nucleusCurrentPositions[i] + (Random.insideUnitSphere * NucleusJitter)) * Radius * finalScale.x), randomRotations[i % randomRotations.Length], finalScale);
             }
         }
 
         Graphics.DrawMeshInstanced(Mesh, 0, ProtonMat, protonMatrixes, protonMatrixes.Length, propertyBlock, UnityEngine.Rendering.ShadowCastingMode.Off, false, AtomLayer);
         Graphics.DrawMeshInstanced(Mesh, 0, NeutronMat, neutronMatrixes, neutronMatrixes.Length, propertyBlock, UnityEngine.Rendering.ShadowCastingMode.Off, false, AtomLayer);
+    }
+
+    private void RefreshProperties()
+    {
+        if (propertyBlock == null)
+        {
+            propertyBlock = new MaterialPropertyBlock();
+            ProtonMat.enableInstancing = true;
+            NeutronMat.enableInstancing = true;
+        }
+
+        if (randomRotations == null)
+        {
+            randomRotations = new Quaternion[10];
+            for (int i = 0; i < randomRotations.Length; i++)
+            {
+                randomRotations[i] = Quaternion.Euler(Random.value * 360, Random.value * 360, Random.value * 360);
+            }
+        }
+
+        if (nucleusTargetPositions == null || nucleusTargetPositions.Length < NumProtons + NumNeutrons)
+        {
+            nucleusTargetPositions = new Vector3[NumProtons + NumNeutrons];
+            nucleusCurrentPositions = new Vector3[NumProtons + NumNeutrons];
+            protonMatrixes = new Matrix4x4[NumProtons];
+            neutronMatrixes = new Matrix4x4[NumNeutrons];
+
+            for (int i = 0; i < nucleusTargetPositions.Length; i++)
+            {
+                nucleusTargetPositions[i] = Random.onUnitSphere;
+                nucleusCurrentPositions[i] = nucleusTargetPositions[i] * 5f;
+            }
+        }
     }
 }
