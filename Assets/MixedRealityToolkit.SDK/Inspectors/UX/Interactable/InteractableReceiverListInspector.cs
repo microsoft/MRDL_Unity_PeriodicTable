@@ -127,7 +127,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public static void RenderEventSettings(SerializedProperty eventItem, int index, InteractableTypesContainer options, InspectorUIUtility.MultiListButtonEvent changeEvent, InspectorUIUtility.ListButtonEvent removeEvent)
         {
-            EditorGUILayout.BeginVertical("Box");
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+
             SerializedProperty uEvent = eventItem.FindPropertyRelative("Event");
             SerializedProperty eventName = eventItem.FindPropertyRelative("Name");
             SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
@@ -136,15 +137,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // show event dropdown
             int id = InspectorUIUtility.ReverseLookup(className.stringValue, options.ClassNames);
-            int newId = EditorGUILayout.Popup("Select Event Type", id, options.ClassNames);
 
-            if (id != newId || String.IsNullOrEmpty(className.stringValue))
+            EditorGUILayout.BeginHorizontal();
+
+            Rect position = EditorGUILayout.GetControlRect();
+            GUIContent selectLabel = new GUIContent("Select Event Type", "Select the event type from the list");
+            EditorGUI.BeginProperty(position, selectLabel, className);
             {
-                className.stringValue = options.ClassNames[newId];
-                assemblyQualifiedName.stringValue = options.AssemblyQualifiedNames[newId];
+                //int newId = EditorGUI.Popup(position, selectLabel.text, id, options.ClassNames);
+                int newId = EditorGUI.Popup(position, id, options.ClassNames);
 
-                changeEvent(new int[] { index, newId }, eventItem);
+                if (id != newId || String.IsNullOrEmpty(className.stringValue))
+                {
+                    className.stringValue = options.ClassNames[newId];
+                    assemblyQualifiedName.stringValue = options.AssemblyQualifiedNames[newId];
+
+                    changeEvent(new int[] { index, newId }, eventItem);
+                }
+
             }
+            EditorGUI.EndProperty();
+
+            if (removeEvent != null)
+            {
+                InspectorUIUtility.FlexButton(new GUIContent("Remove Event"), index, removeEvent);
+            }
+
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Space();
 
             if (!hideEvents.boolValue)
             {
@@ -152,7 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             // show event properties
-            EditorGUI.indentLevel = indentOnSectionStart + 1;
             SerializedProperty eventSettings = eventItem.FindPropertyRelative("Settings");
             for (int j = 0; j < eventSettings.arraySize; j++)
             {
@@ -163,14 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     InspectorFieldsUtility.DisplayPropertyField(eventSettings.GetArrayElementAtIndex(j));
                 }
-            }
-            EditorGUI.indentLevel = indentOnSectionStart;
-
-            EditorGUILayout.Space();
-
-            if(removeEvent != null)
-            {
-                InspectorUIUtility.FlexButton(new GUIContent("Remove Event"), index, removeEvent);
             }
 
             EditorGUILayout.EndVertical();
