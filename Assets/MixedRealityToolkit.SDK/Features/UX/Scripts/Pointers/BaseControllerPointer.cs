@@ -59,6 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected bool IsHoldPressed = false;
 
+        private bool isCursorInstantiatedFromPrefab = false;
+
         /// <summary>
         /// Set a new cursor for this <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>
         /// </summary>
@@ -68,27 +70,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (cursorInstance != null)
             {
-                if (Application.isEditor)
-                {
-                    DestroyImmediate(cursorInstance);
-                }
-                else
-                {
-                    Destroy(cursorInstance);
-                }
-
+                DestroyCursorInstance();
                 cursorInstance = newCursor;
             }
 
             if (cursorInstance == null && cursorPrefab != null)
             {
                 cursorInstance = Instantiate(cursorPrefab, transform);
+                isCursorInstantiatedFromPrefab = true;
             }
 
             if (cursorInstance != null)
             {
                 cursorInstance.name = $"{Handedness}_{name}_Cursor";
+
+                BaseCursor oldC = BaseCursor as BaseCursor;
+                if (oldC != null && enabled)
+                {
+                    oldC.VisibleSourcesCount--;
+                }
+
                 BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
+
+                BaseCursor newC = BaseCursor as BaseCursor;
+                if (newC != null && enabled)
+                {
+                    newC.VisibleSourcesCount++;
+                }
 
                 if (BaseCursor != null)
                 {
@@ -108,6 +116,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private void DestroyCursorInstance()
+        {
+            if (cursorInstance != null)
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(cursorInstance);
+                }
+                else
+                {
+                    DestroyImmediate(cursorInstance);
+                }
+            }
+        }
+
         #region MonoBehaviour Implementation
 
         protected override void OnEnable()
@@ -123,6 +146,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     renderer.enabled = false;
                 }
             }
+
+            SetCursor();
         }
 
         protected override async void Start()
@@ -143,8 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Destroy(gameObject);
                 return;
             }
-
-            SetCursor();
         }
 
         protected override void OnDisable()
@@ -160,6 +183,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsSelectPressed = false;
             HasSelectPressedOnce = false;
             BaseCursor?.SetVisibility(false);
+
+            BaseCursor c = BaseCursor as BaseCursor;
+            if (c != null)
+            {
+                c.VisibleSourcesCount--;
+            }
+
+            // Need to destroy instantiated cursor prefab if it was added by the controller itself in 'OnEnable'
+            if (isCursorInstantiatedFromPrefab)
+            {
+                // Manually reset base cursor before destroying it
+                BaseCursor.Destroy();
+                DestroyCursorInstance();
+                isCursorInstantiatedFromPrefab = false;
+            }
         }
 
         #endregion  MonoBehaviour Implementation
@@ -433,6 +471,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
+            if(!IsInteractionEnabled) { return; }
+
             base.OnInputUp(eventData);
 
             if (eventData.SourceId == InputSourceParent.SourceId)
@@ -455,6 +495,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
         {
+            if (!IsInteractionEnabled) { return; }
+
             base.OnInputDown(eventData);
 
             if (eventData.SourceId == InputSourceParent.SourceId)
