@@ -25,7 +25,7 @@ You can use this project's components to create your own mixed reality app exper
 The current supported version of Unity is [**Unity 2018.4.x**](https://unity3d.com/unity/qa/lts-releases?version=2018.4). 
 
 # Used MRTK version
-The project(master branch) is based on [**MRTK v2.0.0 RC2.1**](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.0.0-RC2.1). 
+The project(master branch) is based on [**MRTK v2.0.0**](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.0.0). 
 
 # Supported device
 - [HoloLens 2](https://www.hololens.com)
