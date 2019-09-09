@@ -4128,16 +4128,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1698298667}
     m_Modifications:
-    - target: {fileID: 452862059264225971, guid: 060e749d11f9010408c15aeb6462b5b7,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 587168422}
     - target: {fileID: 1629738910635313621, guid: 060e749d11f9010408c15aeb6462b5b7,
         type: 3}
       propertyPath: m_Name
       value: LayoutStyleButtons
       objectReference: {fileID: 0}
+    - target: {fileID: 452862059264225971, guid: 060e749d11f9010408c15aeb6462b5b7,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 587168422}
     - target: {fileID: 2326278472989746053, guid: 060e749d11f9010408c15aeb6462b5b7,
         type: 3}
       propertyPath: m_Mesh
