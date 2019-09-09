@@ -7,6 +7,7 @@ public class LayoutStyleChanger : MonoBehaviour
 {
     public GridObjectCollection objectCollection;
     public Transform tableParentTransform;
+    public Transform legendTransform;
 
     public void ChangeLayoutStylePlane()
     {
@@ -21,8 +22,8 @@ public class LayoutStyleChanger : MonoBehaviour
             objectCollection.CellHeight = 0.21f;
             objectCollection.UpdateCollection();
 
-            tableParentTransform.localPosition = new Vector3(0.0f, -0.5f, 3.0f);
-
+            tableParentTransform.localPosition = new Vector3(0.0f, -0.5f, 1.2f);
+            legendTransform.localPosition = new Vector3(0.0f, 0.15f, 1.8f);
         }
     }
 
@@ -40,7 +41,7 @@ public class LayoutStyleChanger : MonoBehaviour
             objectCollection.UpdateCollection();
 
             tableParentTransform.localPosition = new Vector3(0.0f, -0.4f, 1.3f);
-
+            legendTransform.localPosition = new Vector3(0.0f, 0.15f, 1.8f);
         }
     }
 
@@ -58,7 +59,7 @@ public class LayoutStyleChanger : MonoBehaviour
             objectCollection.UpdateCollection();
 
             tableParentTransform.localPosition = new Vector3(0.0f, -1.7f, 2.0f);
-
+            legendTransform.localPosition = new Vector3(0.0f, 0.15f, 1.8f);
         }
     }
 
@@ -75,8 +76,8 @@ public class LayoutStyleChanger : MonoBehaviour
             objectCollection.CellHeight = 0.3f;
             objectCollection.UpdateCollection();
 
-            tableParentTransform.localPosition = new Vector3(0.0f, 0.0f, 0.8f);
-
+            tableParentTransform.localPosition = new Vector3(0.0f, -0.35f, 1.3f);
+            legendTransform.localPosition = new Vector3(0.24f, 0.6f, 1.8f);
         }
     }
 }
