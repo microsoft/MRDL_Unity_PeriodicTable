@@ -511,6 +511,7 @@ MonoBehaviour:
   ElementPrefab: {fileID: 1877953240409378, guid: e2d688e6082495644a547415c0225f23,
     type: 3}
   ElementSeperationDistance: 0.2
+  LegendTransform: {fileID: 722607367}
   Collection: {fileID: 0}
   MatAlkaliMetal: {fileID: 2100000, guid: 0c4cff1c31449f640b646acc22dedfba, type: 2}
   MatAlkalineEarthMetal: {fileID: 2100000, guid: 8e732ef942d91bb4381c401be31f5fb0,

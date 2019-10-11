@@ -55,6 +55,9 @@ namespace HoloToolkit.MRDL.PeriodicTable
         // How much space to put between each element prefab
         public float ElementSeperationDistance;
 
+        // Legend
+        public Transform LegendTransform;
+
         public GridObjectCollection Collection;
 
         public Material MatAlkaliMetal;
@@ -125,6 +128,8 @@ namespace HoloToolkit.MRDL.PeriodicTable
                     i++;
                 }
                 Parent.localPosition = new Vector3(0.0f, -0.7f, 0.7f);
+                LegendTransform.localPosition = new Vector3(0.0f, 0.15f, 1.8f);
+
             }
         }
     }
