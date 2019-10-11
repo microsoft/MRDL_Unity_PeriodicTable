@@ -28,6 +28,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
 
         public float PresentationDistance = 1f;
         public float TravelTime = 1f;
+        public AnimationCurve SmoothPosition = AnimationCurve.EaseInOut(0, 0, 1, 1);
         public bool OrientToCamera = true;
         public bool OrientYAxisOnly = true;
         public Transform TargetTranfsorm;
@@ -82,7 +83,8 @@ namespace HoloToolkit.MRDL.PeriodicTable
             {
                 // Move the object directly in front of player
                 normalizedProgress = (Time.time - startTime) / TravelTime;
-                TargetTranfsorm.position = Vector3.Lerp(initialPosition, targetPosition, normalizedProgress);
+                TargetTranfsorm.position = Vector3.Lerp(initialPosition, targetPosition, SmoothPosition.Evaluate(normalizedProgress));
+
                 if (OrientToCamera)
                 {
                     TargetTranfsorm.rotation = Quaternion.Lerp(TargetTranfsorm.rotation, targetRotation, Time.deltaTime * 10f);
@@ -104,7 +106,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
             while (normalizedProgress < 1f)
             {
                 normalizedProgress = (Time.time - startTime) / TravelTime;
-                TargetTranfsorm.position = Vector3.Lerp(targetPosition, initialPosition, normalizedProgress);
+                TargetTranfsorm.position = Vector3.Lerp(targetPosition, initialPosition, SmoothPosition.Evaluate(normalizedProgress));
                 if (OrientToCamera)
                 {
                     TargetTranfsorm.rotation = Quaternion.Lerp(TargetTranfsorm.rotation, initialRotation, Time.deltaTime * 10f);

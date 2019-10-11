@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void Awake()
         {
-            moveLogic = new TwoHandMoveLogic(constraintOnMovement);
+            moveLogic = new TwoHandMoveLogic();
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
         }
@@ -262,6 +262,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             scaleHandler = this.GetComponent<TransformScaleHandler>();
+        }
+        private void OnDisable()
+        {
+            ForceEndManipulation();
         }
         #endregion MonoBehaviour Functions
 
@@ -593,7 +597,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if ((currentState & State.Moving) > 0)
             {
                 MixedRealityPose pose = GetAveragePointerPose();
-                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, IsNearManipulation(), true);
+                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, IsNearManipulation(), true, constraintOnMovement);
             }
 
             float lerpAmount = GetLerpAmount();
@@ -672,7 +676,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             targetRotation = ApplyConstraints(targetRotation);
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, IsNearManipulation(), rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
+            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, IsNearManipulation(), rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, constraintOnMovement);
 
             float lerpAmount = GetLerpAmount();
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
