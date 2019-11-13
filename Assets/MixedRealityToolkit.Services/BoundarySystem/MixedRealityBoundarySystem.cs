@@ -17,10 +17,29 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
     public class MixedRealityBoundarySystem : BaseCoreSystem, IMixedRealityBoundarySystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealityBoundarySystem(
             IMixedRealityServiceRegistrar registrar,
             MixedRealityBoundaryVisualizationProfile profile,
-            ExperienceScale scale) : base(registrar, profile)
+            ExperienceScale scale) : this(profile, scale)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
+        public MixedRealityBoundarySystem(
+            MixedRealityBoundaryVisualizationProfile profile,
+            ExperienceScale scale) : base(profile)
         {
             Scale = scale;
         }
@@ -570,7 +589,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         }
 
         /// <inheritdoc/>
-        public Edge[] Bounds { get; private set; } = new Edge[0];
+        public Edge[] Bounds { get; private set; } = System.Array.Empty<Edge>();
 
         /// <inheritdoc/>
         public float? FloorHeight { get; private set; } = null;
@@ -892,7 +911,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         private void CalculateBoundaryBounds()
         {
             // Reset the bounds
-            Bounds = new Edge[0];
+            Bounds = System.Array.Empty<Edge>();
             FloorHeight = null;
             rectangularBounds = null;
 
