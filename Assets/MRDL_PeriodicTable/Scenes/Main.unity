@@ -1327,6 +1327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList: []
   ignoreInactiveTransforms: 1
   sortType: 0
   surfaceType: 1
@@ -4248,12 +4249,37 @@ PrefabInstance:
     - target: {fileID: 9091241038160782715, guid: 060e749d11f9010408c15aeb6462b5b7,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091241038160782715, guid: 060e749d11f9010408c15aeb6462b5b7,
+        type: 3}
+      propertyPath: maxViewDegrees
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091241038160782715, guid: 060e749d11f9010408c15aeb6462b5b7,
+        type: 3}
+      propertyPath: orientToReferenceDirection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4746032762882263021, guid: 060e749d11f9010408c15aeb6462b5b7,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6866623847610613245, guid: 060e749d11f9010408c15aeb6462b5b7,
+        type: 3}
+      propertyPath: additionalOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6866623847610613245, guid: 060e749d11f9010408c15aeb6462b5b7,
+        type: 3}
+      propertyPath: additionalOffset.y
+      value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475177871484513024, guid: 060e749d11f9010408c15aeb6462b5b7,
+        type: 3}
+      propertyPath: MinDistance
+      value: 24.167835
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 060e749d11f9010408c15aeb6462b5b7, type: 3}
