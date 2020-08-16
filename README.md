@@ -1,4 +1,4 @@
-<img src="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable/blob/master/External/ReadMeImages/PeriodicTable_Hero.jpg" alt="Periodic Table of the Elements">
+![MRDL_PeriodicTable2c](https://user-images.githubusercontent.com/13754172/90335383-ab391e80-e00f-11ea-8a6c-b61aa910b83d.gif)
 
 # Mixed Reality Design Labs
 This repo is where Microsoft's Windows Mixed Reality Design team publishes sample apps and experiments. Find out details on https://developer.microsoft.com/en-us/windows/mixed-reality/periodic_table_of_the_elements
