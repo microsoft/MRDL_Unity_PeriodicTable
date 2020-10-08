@@ -1,0 +1,219 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.6": {
+      "Microsoft.Windows.MixedReality.DotNetWinRT/0.5.1049": {
+        "type": "package",
+        "dependencies": {
+          "System.Drawing.Primitives": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/Microsoft.Windows.MixedReality.DotNetWinRT.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Microsoft.Windows.MixedReality.DotNetWinRT.dll": {}
+        },
+        "build": {
+          "build/Microsoft.Windows.MixedReality.DotNetWinRT.targets": {}
+        }
+      },
+      "MSBuildForUnity/0.9.1-123842": {
+        "type": "package",
+        "build": {
+          "build/MSBuildForUnity.props": {},
+          "build/MSBuildForUnity.targets": {}
+        },
+        "buildMultiTargeting": {
+          "buildCrossTargeting/MSBuildForUnity.props": {},
+          "buildCrossTargeting/MSBuildForUnity.targets": {}
+        }
+      },
+      "System.Drawing.Primitives/4.3.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Drawing",
+          "mscorlib"
+        ],
+        "compile": {
+          "ref/net45/System.Drawing.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Drawing.Primitives.dll": {}
+        }
+      },
+      "DotNetAdapter/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6",
+        "dependencies": {
+          "Microsoft.Windows.MixedReality.DotNetWinRT": "0.5.1049"
+        },
+        "compile": {
+          "bin/placeholder/DotNetAdapter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DotNetAdapter.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Microsoft.Windows.MixedReality.DotNetWinRT/0.5.1049": {
+      "sha512": "3dmjr3qJW86lZJYfxw/C0wCG5gw0lHoo2uSSHLorOcV+ip7y0w3mN/2vpAoBERH5MvFM7072RI3xdBeTbVbjpw==",
+      "type": "package",
+      "path": "microsoft.windows.mixedreality.dotnetwinrt/0.5.1049",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "MSBuildForUnity/MetaOverrides/InEditor/Microsoft.Windows.MixedReality.DotNetWinRT.dll.meta",
+        "MSBuildForUnity/MetaOverrides/Microsoft.Windows.MixedReality.DotNetWinRT.dll.meta",
+        "Unity/Editor/Microsoft.Windows.MixedReality.DotNetWinRT.Editor.asmdef",
+        "Unity/Editor/Microsoft.Windows.MixedReality.DotNetWinRT.Editor.asmdef.meta",
+        "Unity/Editor/Microsoft.Windows.MixedReality.DotNetWinRT.Init.cs",
+        "Unity/Editor/Microsoft.Windows.MixedReality.DotNetWinRT.Init.cs.meta",
+        "Unity/x64/MonoSupport.dll",
+        "Unity/x64/MonoSupport.dll.meta",
+        "build/Microsoft.Windows.MixedReality.DotNetWinRT.targets",
+        "lib/netstandard1.3/Microsoft.Windows.MixedReality.DotNetWinRT.dll",
+        "lib/netstandard1.3/Microsoft.Windows.MixedReality.DotNetWinRT.xml",
+        "lib/netstandard2.0/Microsoft.Windows.MixedReality.DotNetWinRT.dll",
+        "lib/netstandard2.0/Microsoft.Windows.MixedReality.DotNetWinRT.xml",
+        "lib/uap10.0.18362/Microsoft.Windows.MixedReality.DotNetWinRT.dll",
+        "lib/uap10.0.18362/Microsoft.Windows.MixedReality.DotNetWinRT.xml",
+        "lib/unity/net46/Microsoft.Windows.MixedReality.DotNetWinRT.dll",
+        "lib/unity/net46/Microsoft.Windows.MixedReality.DotNetWinRT.dll.meta",
+        "lib/unity/netstandard2.0/Microsoft.Windows.MixedReality.DotNetWinRT.dll",
+        "lib/unity/netstandard2.0/Microsoft.Windows.MixedReality.DotNetWinRT.dll.meta",
+        "microsoft.windows.mixedreality.dotnetwinrt.0.5.1049.nupkg.sha512",
+        "microsoft.windows.mixedreality.dotnetwinrt.nuspec"
+      ]
+    },
+    "MSBuildForUnity/0.9.1-123842": {
+      "sha512": "lTX9iAdMMxJ+iY1RJugq087JlKqoGrpfpezJxDSPZI+HDxaNwAtw6Ri3xpNau1OA2XQNYeABKwflUMjtpea6wA==",
+      "type": "package",
+      "path": "msbuildforunity/0.9.1-123842",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/MSBuildForUnity.props",
+        "build/MSBuildForUnity.targets",
+        "buildCommon/MSBuildForUnity.dll",
+        "buildCommon/Mono.Cecil.Mdb.dll",
+        "buildCommon/Mono.Cecil.Pdb.dll",
+        "buildCommon/Mono.Cecil.Rocks.dll",
+        "buildCommon/Mono.Cecil.dll",
+        "buildCommon/Newtonsoft.Json.dll",
+        "buildCommon/Publish.props",
+        "buildCommon/Publish.targets",
+        "buildCommon/RemapSymbolSources.props",
+        "buildCommon/RemapSymbolSources.targets",
+        "buildCommon/UnityMetaFileGenerator.props",
+        "buildCommon/UnityMetaFileGenerator.targets",
+        "buildCrossTargeting/MSBuildForUnity.props",
+        "buildCrossTargeting/MSBuildForUnity.targets",
+        "msbuildforunity.0.9.1-123842.nupkg.sha512",
+        "msbuildforunity.nuspec"
+      ]
+    },
+    "System.Drawing.Primitives/4.3.0": {
+      "sha512": "1QU/c35gwdhvj77fkScXQQbjiVAqIL3fEYn/19NE0CV/ic5TN5PyWAft8HsrbRd4SBLEoErNCkWSzMDc0MmbRw==",
+      "type": "package",
+      "path": "system.drawing.primitives/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/System.Drawing.Primitives.dll",
+        "lib/netstandard1.1/System.Drawing.Primitives.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/System.Drawing.Primitives.dll",
+        "ref/netstandard1.1/System.Drawing.Primitives.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.drawing.primitives.4.3.0.nupkg.sha512",
+        "system.drawing.primitives.nuspec"
+      ]
+    },
+    "DotNetAdapter/1.0.0": {
+      "type": "project",
+      "path": "MRTK/Providers/WindowsMixedReality/Shared/DotNetAdapter/DotNetAdapter.csproj",
+      "msbuildProject": "MRTK/Providers/WindowsMixedReality/Shared/DotNetAdapter/DotNetAdapter.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.6": [
+      "DotNetAdapter >= 1.0.0",
+      "MSBuildForUnity >= 0.9.1-* <= 0.9.1"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\dongpark\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\Enlistements\\MRDL-PeriodicTable\\Assets\\PTET.Dependencies.msb4u.csproj",
+      "projectName": "PTET.Dependencies.msb4u",
+      "projectPath": "D:\\Enlistements\\MRDL-PeriodicTable\\Assets\\PTET.Dependencies.msb4u.csproj",
+      "packagesPath": "C:\\Users\\dongpark\\.nuget\\packages\\",
+      "outputPath": "D:\\Enlistements\\MRDL-PeriodicTable\\MSBuild\\Output\\obj\\Dependencies\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
+      "configFilePaths": [
+        "D:\\Enlistements\\MRDL-PeriodicTable\\Assets\\NuGet.Config",
+        "C:\\Users\\dongpark\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net46"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/nuget/v3/index.json": {}
+      },
+      "frameworks": {
+        "net46": {
+          "projectReferences": {
+            "D:\\Enlistements\\MRDL-PeriodicTable\\Assets\\MRTK\\Providers\\WindowsMixedReality\\Shared\\DotNetAdapter\\DotNetAdapter.csproj": {
+              "projectPath": "D:\\Enlistements\\MRDL-PeriodicTable\\Assets\\MRTK\\Providers\\WindowsMixedReality\\Shared\\DotNetAdapter\\DotNetAdapter.csproj",
+              "privateAssets": "analyzers"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net46": {
+        "dependencies": {
+          "MSBuildForUnity": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers",
+            "suppressParent": "Analyzers",
+            "target": "Package",
+            "version": "[0.9.1-*, 0.9.1]"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

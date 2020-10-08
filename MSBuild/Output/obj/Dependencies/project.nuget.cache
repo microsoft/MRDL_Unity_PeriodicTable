@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "fVsw2F7I52Y3rfjb/ygmskPWBhOy5cdt5R0u/Jh3Vso+PrcRMSQ69XCrVQgXXsEIutWVTfZGmoh8mrdS6QzXgQ==",
+  "success": true,
+  "projectFilePath": "D:\\Enlistements\\MRDL-PeriodicTable\\Assets\\PTET.Dependencies.msb4u.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dongpark\\.nuget\\packages\\microsoft.windows.mixedreality.dotnetwinrt\\0.5.1049\\microsoft.windows.mixedreality.dotnetwinrt.0.5.1049.nupkg.sha512",
+    "C:\\Users\\dongpark\\.nuget\\packages\\msbuildforunity\\0.9.1-123842\\msbuildforunity.0.9.1-123842.nupkg.sha512",
+    "C:\\Users\\dongpark\\.nuget\\packages\\system.drawing.primitives\\4.3.0\\system.drawing.primitives.4.3.0.nupkg.sha512"
+  ],
+  "logs": []
+}
