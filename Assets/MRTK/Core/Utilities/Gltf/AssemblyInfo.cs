@@ -1,13 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyVersion("2.4.0.0")]
-[assembly: AssemblyFileVersion("2.4.0.0")]
-
-[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit")]
-[assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
-
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Gltf.Importers")]
+[assembly: System.Reflection.AssemblyVersion("2.5.0.0")]
+[assembly: System.Reflection.AssemblyFileVersion("2.5.0.0")]
+
+[assembly: System.Reflection.AssemblyProduct("Microsoft® Mixed Reality Toolkit aipmragent_work")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright © Microsoft Corporation")]
