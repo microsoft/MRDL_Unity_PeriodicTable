@@ -1,5 +1,5 @@
 <img src="https://user-images.githubusercontent.com/13754172/90335383-ab391e80-e00f-11ea-8a6c-b61aa910b83d.gif" width="100%">
-*Periodic Table of the Elements app running on Microsoft HoloLens 2
+Periodic Table of the Elements app running on Microsoft HoloLens 2
 
 # Mixed Reality Design Labs
 This repo is where Microsoft's Windows Mixed Reality Design team publishes sample apps and experiments. Find out details on https://developer.microsoft.com/en-us/windows/mixed-reality/periodic_table_of_the_elements
@@ -27,6 +27,7 @@ The current supported version of Unity is [**Unity 2018.4.x**](https://unity3d.c
 
 # Used MRTK version
 The project(master branch) is based on [**MRTK v2.5.0**](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/). 
+![Mixed Reality Toolkit](https://microsoft.github.io/MixedRealityToolkit-Unity/version/releases/2.5.0/Documentation/Images/Logo_MRTK_Unity_Banner.png)
 
 # Supported device
 - [HoloLens 2](https://www.hololens.com)
