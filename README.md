@@ -12,10 +12,13 @@ Periodic Table of the Elements is an open-source sample app from Microsoft's Mix
 - **MRTK [Button](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html)**
 - **MRTK [Manipulation Handler](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html)**
 - **MRTK [Hand Menu](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_HandMenu.html)**
-
 - Loading and parsing local JSON file data using Unity's JsonUtility
 
 You can use this project's components to create your own mixed reality app experiences. 
+<img src="https://user-images.githubusercontent.com/13754172/95565292-ea597e00-0a5a-11eb-902b-c61039073cd4.png" width="100%">
+<br/>
+<img src="https://user-images.githubusercontent.com/13754172/95565398-1bd24980-0a5b-11eb-8213-c58a523355bd.png" width="100%">
+
 
 # Porting story (HoloLens 2 with MRTK v2)
 [Bringing the Periodic Table of the Elements app to HoloLens 2 with MRTK v2](https://medium.com/@dongyoonpark/bringing-the-periodic-table-of-the-elements-app-to-hololens-2-with-mrtk-v2-a6e3d8362158)
