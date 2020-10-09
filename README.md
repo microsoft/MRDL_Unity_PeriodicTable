@@ -11,6 +11,8 @@ Periodic Table of the Elements is an open-source sample app from Microsoft's Mix
 - Create objects that respond to the standard inputs using **MRTK's [Interactable](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html)**. 
 - **MRTK [Button](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html)**
 - **MRTK [Manipulation Handler](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html)**
+- **MRTK [Hand Menu](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_HandMenu.html)**
+
 - Loading and parsing local JSON file data using Unity's JsonUtility
 
 You can use this project's components to create your own mixed reality app experiences. 
