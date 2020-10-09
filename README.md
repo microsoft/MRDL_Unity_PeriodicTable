@@ -1,4 +1,5 @@
-![MRDL_PeriodicTable2c](https://user-images.githubusercontent.com/13754172/90335383-ab391e80-e00f-11ea-8a6c-b61aa910b83d.gif)
+<img src="https://user-images.githubusercontent.com/13754172/90335383-ab391e80-e00f-11ea-8a6c-b61aa910b83d.gif" width="100%">
+*Periodic Table of the Elements app running on Microsoft HoloLens 2
 
 # Mixed Reality Design Labs
 This repo is where Microsoft's Windows Mixed Reality Design team publishes sample apps and experiments. Find out details on https://developer.microsoft.com/en-us/windows/mixed-reality/periodic_table_of_the_elements
@@ -22,16 +23,15 @@ You can use this project's components to create your own mixed reality app exper
 
 
 # Supported Unity version
-The current supported version of Unity is [**Unity 2018.4.x**](https://unity3d.com/unity/qa/lts-releases?version=2018.4). 
+The current supported version of Unity is [**Unity 2018.4.x**](https://unity3d.com/unity/qa/lts-releases?version=2018.4) or higher
 
 # Used MRTK version
-The project(master branch) is based on [**MRTK v2.0.0**](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.0.0). 
+The project(master branch) is based on [**MRTK v2.5.0**](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/). 
 
 # Supported device
 - [HoloLens 2](https://www.hololens.com)
 - [HoloLens](https://www.hololens.com)
 - [Immersive headset with motion controllers](https://www.microsoft.com/en-us/windows/windows-mixed-reality)
-
 
 
 # More from Mixed Reality Design Labs #
