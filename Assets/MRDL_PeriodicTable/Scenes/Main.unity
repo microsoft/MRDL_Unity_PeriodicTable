@@ -4123,7 +4123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: 31a611a779d3499e8e35f1a2018ca841, type: 2}
+  activeProfile: {fileID: 11400000, guid: 60293c76ff5cf4f4a8d23af91137d176, type: 2}
 --- !u!4 &1818315359
 Transform:
   m_ObjectHideFlags: 0
@@ -4315,7 +4315,6 @@ GameObject:
   - component: {fileID: 1947976921}
   - component: {fileID: 1947976920}
   - component: {fileID: 1947976919}
-  - component: {fileID: 1947976918}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4337,29 +4336,6 @@ Transform:
   m_Father: {fileID: 48069039}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1947976918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1947976916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf98dd1206224111a38765365e98e207, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lockCursorWhenFocusLocked: 1
-  setCursorInvisibleWhenFocusLocked: 0
-  maxGazeCollisionDistance: 10
-  raycastLayerMasks:
-  - serializedVersion: 2
-    m_Bits: 4294967291
-  stabilizer:
-    storedStabilitySamples: 60
-  gazeTransform: {fileID: 0}
-  minHeadVelocityThreshold: 0.5
-  maxHeadVelocityThreshold: 2
 --- !u!114 &1947976919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4943,7 +4919,7 @@ MonoBehaviour:
   moveLerpTime: 0.1
   rotateLerpTime: 0.1
   scaleLerpTime: 0
-  maintainScale: 1
+  maintainScaleOnInitialization: 1
   smoothing: 1
   lifetime: 0
   safeZone: 0
@@ -4993,7 +4969,7 @@ MonoBehaviour:
   flatHandThreshold: 45
   followHandUntilFacingCamera: 1
   followHandCameraFacingThresholdAngle: 50
-  useGazeActivation: 0
+  useGazeActivation: 1
   eyeGazeProximityThreshold: 0.0125
   headGazeProximityThreshold: 0.03
 --- !u!4 &2665847548267676067
