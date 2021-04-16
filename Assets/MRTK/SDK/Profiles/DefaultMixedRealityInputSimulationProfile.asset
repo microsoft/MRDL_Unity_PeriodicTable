@@ -42,7 +42,7 @@ MonoBehaviour:
   moveUpDown: UpDown
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
-  defaultEyeGazeSimulationMode: 0
+  defaultEyeGazeSimulationMode: 1
   defaultControllerSimulationMode: 2
   toggleLeftControllerKey:
     bindingType: 2
