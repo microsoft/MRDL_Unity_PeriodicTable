@@ -44,6 +44,7 @@ The project(master branch) is based on [**MRTK v2.6.0**](https://github.com/micr
 ## Sample app - Surfaces (HoloLens 2) ##
 <img src="https://github.com/microsoft/MRDL_Unity_Surfaces/raw/master/External/ReadMeImages/MRDL_Surfaces_1.jpg" alt="Lunar Module sample app">
 https://github.com/microsoft/MRDL_Unity_Surfaces
+
 Surfaces demonstrates how to use Mixed Reality Toolkit(MRTK)'s input system and building blocks to create an app experience for HoloLens 2. It explores how we can create a tactile sensation with visual, audio, and fully articulated hand-tracking input.
 
 ## Sample app - Lunar Module (HoloLens 1st gen) ##
