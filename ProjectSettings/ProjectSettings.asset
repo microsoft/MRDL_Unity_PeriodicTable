@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Mixed Reality Design Labs
-  productName: PTET
+  productName: Periodic Table of the Elements
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -584,7 +584,7 @@ PlayerSettings:
     1: TMP_PRESENT
     4: 
     7: 
-    14: TMP_PRESENT
+    14: master;TMP_PRESENT
   platformArchitecture: {}
   scriptingBackend:
     Standalone: 1
@@ -599,14 +599,14 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: PTET
-  metroPackageVersion: 1.0.0.0
+  metroPackageName: PTOE
+  metroPackageVersion: 1.0.2.0
   metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: Mixed Reality Design Labs
   metroCertificateIssuer: Mixed Reality Design Labs
-  metroCertificateNotAfter: 8045e43788bcd701
-  metroApplicationDescription: PTET
+  metroCertificateNotAfter: 80fb4e482ebdd701
+  metroApplicationDescription: PTOE
   wsaImages: {}
   metroTileShortName: DesignLab_Unity
   metroTileShowName: 0

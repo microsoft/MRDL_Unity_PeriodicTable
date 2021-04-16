@@ -105,8 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (dataProviderType != null)
             {
-                MixedRealityDataProviderAttribute providerAttribute = MixedRealityDataProviderAttribute.Find(dataProviderType) as MixedRealityDataProviderAttribute;
-                if (providerAttribute != null)
+                if (MixedRealityDataProviderAttribute.Find(dataProviderType) is MixedRealityDataProviderAttribute providerAttribute)
                 {
                     providerProperties.componentName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : dataProviderType.Name;
                     providerProperties.providerProfile.objectReferenceValue = providerAttribute.DefaultProfile;
@@ -167,6 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
+                    if (index < 0 || index >= providerFoldouts.Count) index = 0;
                     providerFoldouts[index] = EditorGUILayout.Foldout(providerFoldouts[index], providerProperties.componentName.stringValue, true);
 
                     if (GUILayout.Button(removeContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))

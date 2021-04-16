@@ -9,8 +9,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Base class for input sources that don't inherit from MonoBehaviour.
     /// </summary>
-    /// <remarks>This base class does not support adding or removing pointers, because many will never
-    /// pass pointers in their constructors and will fall back to either the Gaze or Mouse Pointer.</remarks>
+    /// <remarks>
+    /// <para>This base class does not support adding or removing pointers, because many will never
+    /// pass pointers in their constructors and will fall back to either the Gaze or Mouse Pointer.</para>
+    /// </remarks>
     public class BaseGenericInputSource : IMixedRealityInputSource, IDisposable
     {
         /// <summary>
@@ -50,7 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return left.Equals(right);
         }
 
-        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
@@ -71,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return obj.GetHashCode();
         }
 
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
