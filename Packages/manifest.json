@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "com.unity.collab-proxy": "1.2.16",
-    "com.unity.ide.rider": "1.1.4",
-    "com.unity.ide.vscode": "1.2.0",
-    "com.unity.test-framework": "1.1.13",
-    "com.unity.textmeshpro": "2.0.1",
-    "com.unity.timeline": "1.2.14",
+    "com.unity.ide.rider": "1.2.1",
+    "com.unity.ide.vscode": "1.2.3",
+    "com.unity.test-framework": "1.1.24",
+    "com.unity.textmeshpro": "2.1.4",
+    "com.unity.timeline": "1.2.18",
     "com.unity.ugui": "1.0.0",
     "com.unity.xr.windowsmr.metro": "4.2.3",
     "com.unity.modules.ai": "1.0.0",
@@ -38,6 +38,11 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "com.microsoft.mixedreality.toolkit.examples": "file:MixedReality/com.microsoft.mixedreality.toolkit.examples-2.7.0.tgz",
+    "com.microsoft.mixedreality.toolkit.extensions": "file:MixedReality/com.microsoft.mixedreality.toolkit.extensions-2.7.0.tgz",
+    "com.microsoft.mixedreality.toolkit.foundation": "file:MixedReality/com.microsoft.mixedreality.toolkit.foundation-2.7.0.tgz",
+    "com.microsoft.mixedreality.toolkit.standardassets": "file:MixedReality/com.microsoft.mixedreality.toolkit.standardassets-2.7.0.tgz",
+    "com.microsoft.mixedreality.toolkit.tools": "file:MixedReality/com.microsoft.mixedreality.toolkit.tools-2.7.0.tgz"
   }
 }
