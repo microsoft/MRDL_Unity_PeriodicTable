@@ -167,7 +167,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
             Atom.NumElectrons = int.Parse(data.number);
             Atom.NumNeutrons = (int)data.atomic_mass / 2;
             Atom.NumProtons = (int)data.atomic_mass / 2;
-            Atom.Radius = data.atomic_mass / 157 * 0.02f;//TEMP
+            Atom.Radius = data.atomic_mass / 157 * 0.13f;//TEMP
 
             foreach (Renderer infoPanel in InfoPanels)
             {
