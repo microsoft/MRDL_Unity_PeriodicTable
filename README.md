@@ -34,6 +34,11 @@ The current supported version of Unity is [**Unity 2018.4.x**](https://unity3d.c
 The project(master branch) is based on [**MRTK v2.6.0**](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/). 
 ![Mixed Reality Toolkit](https://microsoft.github.io/MixedRealityToolkit-Unity/version/releases/2.6.0/Documentation/Images/Logo_MRTK_Unity_Banner.png)
 
+# OpenXR and Unity 2020
+OpenXR + Unity 2020 + MRTK 2.7.2 upgraded project can be found under branch MRTKv272_Unity2020_OpenXR
+Please check out the upgrade story:
+[Updating MRTK Mixed Reality Project to OpenXR+Unity 2020: Periodic Table of the Elements for HoloLens 2](https://dongyoonpark.medium.com/updating-mrtk-mixed-reality-project-to-openxr-unity-2020-periodic-table-of-the-elements-4cf55b0479a4)
+
 # Supported device
 - [HoloLens 2](https://www.hololens.com)
 - [HoloLens](https://www.hololens.com)
