@@ -19,16 +19,16 @@ namespace HoloToolkit.MRDL.PeriodicTable
         public TextMesh ElementNameDetail;
 
         public TextMeshProUGUI ElementDescription;
-        public Text DataAtomicNumber;
-        public Text DataAtomicWeight;
-        public Text DataMeltingPoint;
-        public Text DataBoilingPoint;
+        public TextMeshProUGUI DataAtomicNumber;
+        public TextMeshProUGUI DataAtomicWeight;
+        public TextMeshProUGUI DataMeltingPoint;
+        public TextMeshProUGUI DataBoilingPoint;
 
         public Renderer BoxRenderer;
         public MeshRenderer[] PanelSides;
         public MeshRenderer PanelFront;
         public MeshRenderer PanelBack;
-        public MeshRenderer[] InfoPanels;
+        public Renderer[] InfoPanels;
 
         public Atom Atom;
 
@@ -169,11 +169,11 @@ namespace HoloToolkit.MRDL.PeriodicTable
             Atom.NumProtons = (int)data.atomic_mass / 2;
             Atom.Radius = data.atomic_mass / 157 * 0.13f;//TEMP
 
-            foreach (Renderer infoPanel in InfoPanels)
-            {
-                // Copy the color of the element over to the info panels so they match
-                infoPanel.material.color = dimMaterial.color;
-            }
+            //foreach (Renderer infoPanel in InfoPanels)
+            //{
+            //    // Copy the color of the element over to the info panels so they match
+            //    infoPanel.material.color = dimMaterial.color;
+            //}
 
             BoxRenderer.enabled = false;
 
