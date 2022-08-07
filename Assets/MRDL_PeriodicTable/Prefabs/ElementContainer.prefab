@@ -1982,8 +1982,8 @@ MonoBehaviour:
   PanelFront: {fileID: 23982834227462732}
   PanelBack: {fileID: 23345108612895298}
   InfoPanels:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 896091998717862137}
+  - {fileID: 3877182197882758475}
   Atom: {fileID: 114007692888673194}
   data:
     name: 
@@ -4863,17 +4863,17 @@ PrefabInstance:
     - target: {fileID: 5092507605265006331, guid: c25d8f2d22117bd40ad824684551fbde,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.2772
+      value: 0.2811
       objectReference: {fileID: 0}
     - target: {fileID: 5092507605265006331, guid: c25d8f2d22117bd40ad824684551fbde,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1209
+      value: 0.13
       objectReference: {fileID: 0}
     - target: {fileID: 5092507605265006331, guid: c25d8f2d22117bd40ad824684551fbde,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0036
+      value: 0.0035
       objectReference: {fileID: 0}
     - target: {fileID: 5092507605265006331, guid: c25d8f2d22117bd40ad824684551fbde,
         type: 3}

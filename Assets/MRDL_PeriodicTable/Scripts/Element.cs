@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
+using Microsoft.MixedReality.GraphicsTools;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -28,7 +29,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
         public MeshRenderer[] PanelSides;
         public MeshRenderer PanelFront;
         public MeshRenderer PanelBack;
-        public Renderer[] InfoPanels;
+        public CanvasElementRoundedRect[] InfoPanels;
 
         public Atom Atom;
 
@@ -38,6 +39,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
         private BoxCollider boxCollider;
         private Material highlightMaterial;
         private Material dimMaterial;
+        private Material panelMaterial;
         private Material clearMaterial;
         private PresentToPlayer present;
 
@@ -133,7 +135,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
         /**
          * Set the display data for this element based on the given parsed JSON data
          */
-        public void SetFromElementData(ElementData data, Dictionary<string, Material> typeMaterials)
+        public void SetFromElementData(ElementData data, Dictionary<string, Material> typeMaterials, Dictionary<string, Material> infoPanelMaterials)
         {
             this.data = data;
 
@@ -153,7 +155,15 @@ namespace HoloToolkit.MRDL.PeriodicTable
                 Debug.Log("Couldn't find " + data.category.Trim() + " in element " + data.name);
             }
 
+            // Set up info panel materials
+            if (!infoPanelMaterials.TryGetValue(data.category.Trim(), out panelMaterial))
+            {
+                Debug.Log("Couldn't find " + data.category.Trim() + " in element " + data.name);
+            }
+
             // Create a new highlight material and add it to the dictionary so other can use it
+            Debug.Log(data.category.Trim() + " in element " + data.name);
+
             string highlightKey = data.category.Trim() + " highlight";
             if (!typeMaterials.TryGetValue(highlightKey, out highlightMaterial))
             {
@@ -169,11 +179,11 @@ namespace HoloToolkit.MRDL.PeriodicTable
             Atom.NumProtons = (int)data.atomic_mass / 2;
             Atom.Radius = data.atomic_mass / 157 * 0.13f;//TEMP
 
-            //foreach (Renderer infoPanel in InfoPanels)
-            //{
-            //    // Copy the color of the element over to the info panels so they match
-            //    infoPanel.material.color = dimMaterial.color;
-            //}
+            foreach (CanvasElementRoundedRect infoPanel in InfoPanels)
+            {
+                // Copy the color of the element over to the info panels so they match
+                infoPanel.material = panelMaterial;
+            }
 
             BoxRenderer.enabled = false;
 

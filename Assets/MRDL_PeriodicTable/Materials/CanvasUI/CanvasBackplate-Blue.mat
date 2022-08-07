@@ -39,7 +39,7 @@ Material:
     - _Edge_Width_: 0.5
     - _Fade_Out_: 1
     - _Filter_Width_: 1
-    - _Frequency_: 5.13
+    - _Frequency_: 1
     - _Gradient_Disabled_: 0
     - _GridScale: 0.02
     - _Highlight_: 1
@@ -71,7 +71,7 @@ Material:
     - _Gradient_Color_: {r: 0.745, g: 0.745, b: 0.745, a: 1}
     - _Highlight_Color_: {r: 0.97999996, g: 0.97999996, b: 0.97999996, a: 1}
     - _Highlight_Transform_: {r: 1, g: 1, b: 0, a: 0}
-    - _Iridescence_Tint_: {r: 1, g: 1, b: 1, a: 1}
+    - _Iridescence_Tint_: {r: 0.754717, g: 0.7226771, b: 0.7226771, a: 1}
     - _Line_Color_: {r: 0.6039216, g: 0.3957136, b: 0.30980393, a: 1}
     - _OccludedColor: {r: 0, g: 0.5, b: 1, a: 1}
     - _Top_Left_: {r: 0, g: 0.251, b: 0.502, a: 1}

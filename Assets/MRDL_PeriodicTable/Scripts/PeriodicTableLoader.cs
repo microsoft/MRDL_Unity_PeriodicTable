@@ -72,6 +72,17 @@ namespace HoloToolkit.MRDL.PeriodicTable
         public Material MatActinide;
         public Material MatLanthanide;
 
+        public Material DetailInfoPanelMatAlkaliMetal;
+        public Material DetailInfoPanelMatAlkalineEarthMetal;
+        public Material DetailInfoPanelMatTransitionMetal;
+        public Material DetailInfoPanelMatMetalloid;
+        public Material DetailInfoPanelMatDiatomicNonmetal;
+        public Material DetailInfoPanelMatPolyatomicNonmetal;
+        public Material DetailInfoPanelMatPostTransitionMetal;
+        public Material DetailInfoPanelMatNobleGas;
+        public Material DetailInfoPanelMatActinide;
+        public Material DetailInfoPanelMatLanthanide;
+
         private bool isFirstRun = true;
 
         private void Start()
@@ -103,6 +114,20 @@ namespace HoloToolkit.MRDL.PeriodicTable
             { "lanthanide", MatLanthanide },
         };
 
+            Dictionary<string, Material> infoPanelMaterials = new Dictionary<string, Material>()
+        {
+            { "alkali metal", DetailInfoPanelMatAlkaliMetal },
+            { "alkaline earth metal", DetailInfoPanelMatAlkalineEarthMetal },
+            { "transition metal", DetailInfoPanelMatTransitionMetal },
+            { "metalloid", DetailInfoPanelMatMetalloid },
+            { "diatomic nonmetal", DetailInfoPanelMatDiatomicNonmetal },
+            { "polyatomic nonmetal", DetailInfoPanelMatPolyatomicNonmetal },
+            { "post-transition metal", DetailInfoPanelMatPostTransitionMetal },
+            { "noble gas",DetailInfoPanelMatNobleGas },
+            { "actinide", DetailInfoPanelMatActinide },
+            { "lanthanide", DetailInfoPanelMatLanthanide },
+        };
+
 
             if (isFirstRun == true)
             {
@@ -110,7 +135,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
                 foreach (ElementData element in elements)
                 {
                     GameObject newElement = Instantiate<GameObject>(ElementPrefab, Parent);
-                    newElement.GetComponentInChildren<Element>().SetFromElementData(element, typeMaterials);
+                    newElement.GetComponentInChildren<Element>().SetFromElementData(element, typeMaterials, infoPanelMaterials);
                     newElement.transform.localPosition = new Vector3(element.xpos * ElementSeperationDistance - ElementSeperationDistance * 18 / 2, ElementSeperationDistance * 9 - element.ypos * ElementSeperationDistance, 2.0f);
                     newElement.transform.localRotation = Quaternion.identity;
                 }
@@ -123,7 +148,7 @@ namespace HoloToolkit.MRDL.PeriodicTable
                 // Update position and data of existing element objects
                 foreach(Transform existingElementObject in Parent)
                 {
-                    existingElementObject.parent.GetComponentInChildren<Element>().SetFromElementData(elements[i], typeMaterials);
+                    existingElementObject.parent.GetComponentInChildren<Element>().SetFromElementData(elements[i], typeMaterials, infoPanelMaterials);
                     existingElementObject.localPosition = new Vector3(elements[i].xpos * ElementSeperationDistance - ElementSeperationDistance * 18 / 2, ElementSeperationDistance * 9 - elements[i].ypos * ElementSeperationDistance, 2.0f);
                     existingElementObject.localRotation = Quaternion.identity;
                     i++;

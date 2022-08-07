@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CanvasBackplate-NobleGas
+  m_Name: CanvasBackplate-AlkalineEarthMetal
   m_Shader: {fileID: 4800000, guid: 29b058829dc4dbf449bc59c038dfa631, type: 3}
   m_ShaderKeywords: _IRIDESCENCE_ENABLE_ _SMOOTH_EDGES_
   m_LightmapFlags: 4
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Iridescent_Map_:
-        m_Texture: {fileID: 2800000, guid: d898ba0df32e5da43850db9ebcc9f4f0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 70d3fe2c2365a85408c4751f609e8f2e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -51,7 +51,7 @@ Material:
     - _Line_Gradient_Blend_: 0.5
     - _Line_Width_: 1
     - _Occluded_Intensity_: 1
-    - _Orthographic_Distance_: 100
+    - _Orthographic_Distance_: 400
     - _Rate_: 0.05
     - _Reflected_: 1
     - _Smooth_Edges_: 1
@@ -64,16 +64,16 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Base_Color_: {r: 0, g: 0, b: 0, a: 1}
-    - _Bottom_Left_: {r: 0.77254903, g: 0.21568626, b: 0.61040854, a: 1}
-    - _Bottom_Right_: {r: 0.9245283, g: 0.8170388, b: 0.5800107, a: 1}
+    - _Bottom_Left_: {r: 0.9960785, g: 0.69803923, b: 1, a: 1}
+    - _Bottom_Right_: {r: 0.44705886, g: 0.3137255, b: 0.454902, a: 1}
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _ClipRectRadii: {r: 10, g: 10, b: 10, a: 10}
     - _Gradient_Color_: {r: 0.745, g: 0.745, b: 0.745, a: 1}
     - _Highlight_Color_: {r: 0.97999996, g: 0.97999996, b: 0.97999996, a: 1}
     - _Highlight_Transform_: {r: 1, g: 1, b: 0, a: 0}
-    - _Iridescence_Tint_: {r: 0.8018868, g: 0.7602795, b: 0.7602795, a: 1}
-    - _Line_Color_: {r: 0.764151, g: 0.17661981, b: 0.3496597, a: 1}
+    - _Iridescence_Tint_: {r: 0.47058827, g: 0.32941177, b: 0.4784314, a: 1}
+    - _Line_Color_: {r: 0.89019614, g: 0.62352943, b: 0.8980393, a: 1}
     - _OccludedColor: {r: 1, g: 0, b: 0.13757896, a: 1}
-    - _Top_Left_: {r: 0.5019608, g: 0, b: 0.37124145, a: 1}
-    - _Top_Right_: {r: 0.8509804, g: 0, b: 0.21290214, a: 1}
+    - _Top_Left_: {r: 0.46274513, g: 0.45882356, b: 0.6156863, a: 1}
+    - _Top_Right_: {r: 0.5492167, g: 0.21867211, b: 0.735849, a: 1}
   m_BuildTextureStacks: []
